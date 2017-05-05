@@ -130,6 +130,31 @@ return *this;
 }
 */
 
+Coord_Boundary::Coord_Boundary() : vertices{ NULL }, num_vertices{0}
+{
+}
+
+Coord_Boundary::Coord_Boundary(const Coord_Boundary& other)
+{
+	for (int i = 0; i < this->num_vertices; i++)
+	{
+		this->vertices[i] = other.vertices[i];
+	}
+}
+
+Coord_Boundary Coord_Boundary::operator=(const Coord_Boundary& rhs)
+{
+	for (int i = 0; i < this->num_vertices; i++)
+	{
+		this->vertices[i] = rhs.vertices[i];
+	}
+	return *this;
+}
+
+Coord_Boundary::~Coord_Boundary() 
+{
+	delete[] this->vertices;
+}
 
 float Sphere_Boundary::calculate_distance(XMFLOAT3 pos)
 {
@@ -294,7 +319,7 @@ XMFLOAT3 mul(XMFLOAT3 vec, XMMATRIX &M)
 
 float Coord_Boundary::calculate_distance(XMFLOAT3 pos)
 {
-	return 1000000.0f;
+	return 1000000000.0f;
 }
 
 bool Coord_Boundary::check_collision(XMFLOAT3 pos)
@@ -304,4 +329,9 @@ bool Coord_Boundary::check_collision(XMFLOAT3 pos)
 
 void Coord_Boundary::transform_boundary(XMMATRIX & M, float scale_factor)
 {
+	for (int i = 0; i < this->num_vertices; i++)
+	{
+		this->vertices[i].Pos  = mul(this->vertices[i].Pos,  M);
+		this->vertices[i].Norm = mul(this->vertices[i].Norm, M);
+	}
 }

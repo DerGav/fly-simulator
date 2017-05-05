@@ -88,11 +88,16 @@ public:
 class Coord_Boundary : public Boundary
 {
 public:
+	Coord_Boundary();
+	Coord_Boundary::Coord_Boundary(const Coord_Boundary& other);
+	Coord_Boundary operator=(const Coord_Boundary& rhs);
+	~Coord_Boundary();
 	float calculate_distance(XMFLOAT3 pos);
 	virtual bool check_collision(XMFLOAT3 pos);
 	virtual void transform_boundary(XMMATRIX& M, float scale_factor);
+	
 	SimpleVertex* vertices;
-
+	int num_vertices;
 };
 
 

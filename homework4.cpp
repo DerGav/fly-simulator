@@ -481,12 +481,14 @@ HRESULT InitDevice()
 	LoadCatmullClark(L"ccsphere.cmp", g_pd3dDevice, &g_pVertexBuffer_sky, &model_vertex_sky);
 
 	// load 3ds models
-	Load3DS("house.3ds", g_pd3dDevice,&House.vertex_buffer,&House.vertex_count);
+	//Load3DS("house.3ds", g_pd3dDevice,&House.vertex_buffer,&House.vertex_count);
+	House.load_Model("house.3ds", g_pd3dDevice, COORD, FALSE);
 	table.load_Model("simpleTable.3ds", g_pd3dDevice, BOX, FALSE); // file name, g_p3dDevice, type of collision detection, gourad shading
 	centerTable.load_Model("centerTable/centerTable.3ds", g_pd3dDevice, BOX, FALSE);
 	
 	models.push_back(table);
-	models.push_back(centerTable);
+	//models.push_back(centerTable);
+	models.push_back(House);
 	cam.models = &models;
 	// Set vertex buffer
 	SimpleVertex vertices[] =
@@ -1341,6 +1343,11 @@ void Render_to_texture(long elapsed)
 	M = S * R * T;
 
 	constantbuffer.World = XMMatrixTranspose(M);
+
+
+	if (update_boundaries)
+		House.boundary->transform_boundary(M, scale);
+
 	g_pImmediateContext->UpdateSubresource(g_pCBuffer, 0, NULL, &constantbuffer, 0, 0);
 	// Render terrain
 	g_pImmediateContext->VSSetShader(g_pVertexShader, NULL, 0);

@@ -248,6 +248,18 @@ bool Load3DS(char *filename, ID3D11Device* g_pd3dDevice, ID3D11Buffer **ppVertex
 		vertex_anz += submodels[ii].ianz;
 
 	SimpleVertex *noIndexVer = new SimpleVertex[vertex_anz];
+	
+	if (b == COORD)
+	{
+		model->boundary = new Coord_Boundary();
+		//init the array
+		Coord_Boundary *pCB = dynamic_cast<Coord_Boundary*>(model->boundary);
+		if (pCB)
+		{
+			pCB->vertices = new SimpleVertex[vertex_anz];
+			pCB->num_vertices = vertex_anz;
+		}
+	}
 
 	int vv = 0;
 	XMFLOAT3 avg(0, 0, 0);
@@ -299,7 +311,15 @@ bool Load3DS(char *filename, ID3D11Device* g_pd3dDevice, ID3D11Buffer **ppVertex
 					min_z = noIndexVer[vv].Pos;
 				}
 			}
-
+			if (b == COORD)
+			{
+				Coord_Boundary* pCB = dynamic_cast<Coord_Boundary*>(model->boundary);
+				if (pCB)
+				{
+					pCB->vertices[vv] = noIndexVer[vv];
+					;
+				}
+			}
 			vv++;
 		}
 
@@ -338,8 +358,7 @@ bool Load3DS(char *filename, ID3D11Device* g_pd3dDevice, ID3D11Buffer **ppVertex
 		objSph.radius = XMLoadFloat3(&radiusVec);*/
 	}
 
-	if (b == COORD)
-		model->boundary = new Coord_Boundary();
+
 
 
 

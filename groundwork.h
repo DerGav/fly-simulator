@@ -91,6 +91,7 @@ public:
 	float calculate_distance(XMFLOAT3 pos);
 	virtual bool check_collision(XMFLOAT3 pos);
 	virtual void transform_boundary(XMMATRIX& M, float scale_factor);
+	SimpleVertex* vertices;
 
 };
 

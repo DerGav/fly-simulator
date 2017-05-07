@@ -219,8 +219,8 @@ bool Coord_Boundary::check_collision(XMFLOAT3 pos, XMFLOAT3 camPos)
 	//float d;
 	//for (int i = 0; i < this->num_vertices; i = i + 3)
 	//{
-	//	P0 = XMFLOAT3(-camPos.x, -camPos.y, -camPos.z);
-	//	P1 = XMFLOAT3(-pos.x, -pos.y , -pos.z);
+	//	P0 = XMFLOAT3(camPos.x, camPos.y, camPos.z);
+	//	P1 = XMFLOAT3(pos.x, pos.y, pos.z);
 	//	if (intersect3D_RayTriangle(P0, P1, this->vertices[i].Pos, this->vertices[i + 1].Pos, this->vertices[i + 2].Pos, intersect_point) == 1)
 	//		/*d_vec = intersect_point - camPos;
 	//		d = sqrt(d_vec.x*d_vec.x + d_vec.y*d_vec.y + d_vec.z*d_vec.z);
@@ -268,6 +268,7 @@ int intersect3D_RayTriangle(const XMFLOAT3 P0, const XMFLOAT3 P1, const XMFLOAT3
 		return -1;                  // do not deal with this case
 
 	dir = XMLoadFloat3(&(P1 - P0));              // ray direction vector
+	float dir_len = XMVectorGetX(XMVector3Length(dir));
 	w0 = XMLoadFloat3(&(P0 - V0));
 
 	a = - XMVectorGetX( XMVector3Dot(n, w0));

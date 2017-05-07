@@ -451,6 +451,16 @@ public:
 		position = XMFLOAT3(0, 0, 0);
 		rotation = XMFLOAT3(0, 0, 0);
 		controlledspeed = 0.3;
+
+		//XMFLOAT3 p0, p1, v0, v1, v2, i;
+		//p0 = XMFLOAT3(0,  1, 0);
+		//p1 = XMFLOAT3(0,  0, 0);
+		//v0 = XMFLOAT3(1,  0, 1);
+		//v1 = XMFLOAT3(-1,  0, 1);
+		//v2 = XMFLOAT3(0,  0, -1);
+
+		//if (intersect3D_RayTriangle(p0, p1, v0, v1, v2, i) == 1)
+		//	rotation.x = XM_PI;
 	}
 	//return pointer to vector
 	//vector<ObjectSphere>* getObjectSpheres()
@@ -515,7 +525,7 @@ public:
 		//calculate distance to the center points of all the bounding spheres
 		for (std::vector<Model>::iterator it = models->begin(); it != models->end(); ++it)
 		{
-			if (it->boundary->check_collision(possible_position, this->position))
+			if (it->boundary->check_collision(this->position + move_direction, this->position))
 			{
 				return true;
 			}

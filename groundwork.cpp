@@ -215,18 +215,18 @@ float Coord_Boundary::calculate_distance(XMFLOAT3 pos)
 
 bool Coord_Boundary::check_collision(XMFLOAT3 pos, XMFLOAT3 camPos)
 {
-	//XMFLOAT3 intersect_point,P0,P1,d_vec;
-	//float d;
-	//for (int i = 0; i < this->num_vertices; i = i + 3)
-	//{
-	//	P0 = XMFLOAT3(camPos.x, camPos.y, camPos.z);
-	//	P1 = XMFLOAT3(pos.x, pos.y, pos.z);
-	//	if (intersect3D_RayTriangle(P0, P1, this->vertices[i].Pos, this->vertices[i + 1].Pos, this->vertices[i + 2].Pos, intersect_point) == 1)
-	//		/*d_vec = intersect_point - camPos;
-	//		d = sqrt(d_vec.x*d_vec.x + d_vec.y*d_vec.y + d_vec.z*d_vec.z);
-	//		if (d < 1)*/
-	//		return true;
-	//}
+	XMFLOAT3 intersect_point,P0,P1,d_vec;
+	float d;
+	for (int i = 0; i < this->num_vertices; i = i + 3)
+	{
+		P0 = XMFLOAT3(-camPos.x, -camPos.y, -camPos.z);
+		P1 = XMFLOAT3(-pos.x, -pos.y, -pos.z);
+		if (intersect3D_RayTriangle(P0, P1, this->vertices[i].Pos, this->vertices[i + 1].Pos, this->vertices[i + 2].Pos, intersect_point) == 1)
+			d_vec = intersect_point - camPos;
+			d = sqrt(d_vec.x*d_vec.x + d_vec.y*d_vec.y + d_vec.z*d_vec.z);
+			if (d < 90)
+			return true;
+	}
 
 	return false;
 }

@@ -448,7 +448,7 @@ public:
 	camera()
 	{
 		w = s = a = d = 0;
-		position = XMFLOAT3(0, 0, 0);
+		position = XMFLOAT3(30, -30, 0);
 		rotation = XMFLOAT3(0, 0, 0);
 		controlledspeed = 0.3;
 
@@ -525,7 +525,7 @@ public:
 		//calculate distance to the center points of all the bounding spheres
 		for (std::vector<Model>::iterator it = models->begin(); it != models->end(); ++it)
 		{
-			if (it->boundary->check_collision(this->position + move_direction, this->position))
+			if (it->boundary->check_collision(possible_position, this->position))
 			{
 				return true;
 			}

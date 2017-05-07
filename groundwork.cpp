@@ -1,30 +1,5 @@
 #include "groundwork.h"
 
-
-// push model to the vector in camera
-//int Collision_Detection::push_model(Model * model)
-//{
-//	ObjectSphereVec objSphV = objectSphereVecs[model->index];
-//	ObjectSphere newObjSph;
-//
-//	XMStoreFloat3(&newObjSph.center, objSphV.center);
-//	newObjSph.radius = XMVectorGetX(objSphV.radius);
-//	p_objectSpheres->push_back(newObjSph);
-//	
-//	//return index
-//	return p_objectSpheres->size() - 1;
-//
-//}
-
-//// store the bounding sphere in the array with the unchanged bounding spheres
-//int Collision_Detection::store_model(ObjectSphereVec & objSphV)
-//{
-//	objectSphereVecs.push_back(objSphV);
-//	
-//	//return index
-//	return objectSphereVecs.size() - 1;
-//}
-
 Model::Model()
 {
 	vertex_buffer = NULL;
@@ -48,7 +23,8 @@ Model::Model(const Model & other)
 	else if (pBB)
 		this->boundary = new Box_Boundary(pBB->max_x, pBB->max_y, pBB->max_z, pBB->min_x, pBB->min_y, pBB->min_z);
 	else if (pCB)
-		this->boundary = new Coord_Boundary();
+		this->boundary = new Coord_Boundary(*pCB);
+
 }
 
 Model & Model::operator=(const Model & other)
@@ -72,74 +48,29 @@ void Model::load_Model(char * filename, ID3D11Device * device, BOUNDARY_TYPE b, 
 	vertex_buffer = NULL;
 	vertex_count = 0;
 
-	//index = 0;
-
 	//load 3ds file
 	Load3DS(filename, device, &vertex_buffer, &vertex_count, b, this, g);
 
-	//add to permanent storage vector of collision detection
-	//c_d->push_model(this);
 }
 
-//update the models bounding sphere, with the worldmatrix M
-//scaling matrix must be passed seperately at this point to correctly scale the radius of the sphere..
-//call this before every draw call
-//void Model::update_objectSphere(Collision_Detection * c_d, XMMATRIX & M, XMMATRIX & S)
-//{
-//	//apply matrix m to object sphere
-//	XMFLOAT3 center;
-//	float radius;
-//
-//	//transform vector to center and store in float3
-//	XMStoreFloat3(&center, XMVector3Transform(c_d->objectSphereVecs[index].center, M));
-//	//scale radius vector, calculate length and stor in a float
-//	radius = XMVectorGetX(XMVector3Length((XMVector3Transform(c_d->objectSphereVecs[index].radius, S))));
-//
-//	//update the values in the bounding sphere vector with changing values
-//	c_d->p_objectSpheres->at(index).center = center;
-//	c_d->p_objectSpheres->at(index).radius = radius;
-//}
 
 Sphere_Boundary::Sphere_Boundary(XMFLOAT3 center, float radius) : center{ center }, radius{ radius }
 {
 }
 
-/*Sphere_Boundary::Sphere_Boundary(const Sphere_Boundary & other)
-{
-this->center = other.center;
-this->radius = other.radius;
-}
-
-Boundary & Sphere_Boundary::operator=(const Boundary & other)
-{
-const Sphere_Boundary *pSB = dynamic_cast<const Sphere_Boundary*>(&other);
-this->center = pSB->center;
-this->radius = pSB->radius;
-
-return *this;
-}
 
 
-
-Sphere_Boundary& Sphere_Boundary::operator=(const Sphere_Boundary & other)
-{
-this->center = other.center;
-this->radius = other.radius;
-
-return *this;
-}
-*/
-
-Coord_Boundary::Coord_Boundary() : vertices{ NULL }, num_vertices{0}
-{
-}
+Coord_Boundary::Coord_Boundary() : vertices{ NULL }, num_vertices{ 0 }
+{}
 
 Coord_Boundary::Coord_Boundary(const Coord_Boundary& other)
 {
-	for (int i = 0; i < this->num_vertices; i++)
+	this->vertices = new SimpleVertex[other.num_vertices];
+	for (int i = 0; i < other.num_vertices; i++)
 	{
 		this->vertices[i] = other.vertices[i];
 	}
+	this->num_vertices = other.num_vertices;
 }
 
 Coord_Boundary Coord_Boundary::operator=(const Coord_Boundary& rhs)
@@ -148,6 +79,8 @@ Coord_Boundary Coord_Boundary::operator=(const Coord_Boundary& rhs)
 	{
 		this->vertices[i] = rhs.vertices[i];
 	}
+	this->num_vertices = rhs.num_vertices;
+
 	return *this;
 }
 
@@ -163,7 +96,7 @@ float Sphere_Boundary::calculate_distance(XMFLOAT3 pos)
 	return d_center - radius;
 }
 
-bool Sphere_Boundary::check_collision(XMFLOAT3 pos)
+bool Sphere_Boundary::check_collision(XMFLOAT3 pos, XMFLOAT3 camPos)
 {
 	if (calculate_distance(XMFLOAT3(-pos.x, -pos.y, -pos.z)) < radius)
 		return true;
@@ -177,8 +110,6 @@ void Sphere_Boundary::transform_boundary(XMMATRIX& M, float scale_factor)
 	this->radius *= scale_factor;
 }
 
-
-
 Box_Boundary::Box_Boundary(XMFLOAT3 max_x, XMFLOAT3 max_y, XMFLOAT3 max_z, XMFLOAT3 min_x, XMFLOAT3 min_y, XMFLOAT3 min_z)
 	: max_x{ max_x }
 	, max_y{ max_y }
@@ -186,47 +117,7 @@ Box_Boundary::Box_Boundary(XMFLOAT3 max_x, XMFLOAT3 max_y, XMFLOAT3 max_z, XMFLO
 	, min_x{ min_x }
 	, min_y{ min_y }
 	, min_z{ min_z }
-{
-}
-
-//Box_Boundary::Box_Boundary(const Box_Boundary & other)
-//{
-//	this->max_x = other.max_x;
-//	this->max_y = other.max_y;
-//	this->max_z = other.max_z;
-//	this->min_x = other.min_x;
-//	this->min_y = other.min_y;
-//	this->min_z = other.min_z;
-//
-//	this->
-//}
-//
-//Boundary & Box_Boundary::operator=(const Boundary & other)
-//{
-//	const Box_Boundary *pBB = dynamic_cast<const Box_Boundary*>(&other);
-//
-//	this->max_x = pBB->max_x;
-//	this->max_y = pBB->max_y;
-//	this->max_z = pBB->max_z;
-//	this->min_x = pBB->min_x;
-//	this->min_y = pBB->min_y;
-//	this->min_z = pBB->min_z;
-//
-//	return *this;
-//}
-//
-//Box_Boundary & Box_Boundary::operator=(const Box_Boundary & other)
-//{
-//	this->max_x = other.max_x;
-//	this->max_y = other.max_y;
-//	this->max_z = other.max_z;
-//	this->min_x = other.min_x;
-//	this->min_y = other.min_y;
-//	this->min_z = other.min_z;
-//	
-//	return *this;
-//}
-
+{}
 
 float Box_Boundary::calculate_distance(XMFLOAT3 pos)
 {
@@ -244,7 +135,7 @@ float Box_Boundary::calculate_distance(XMFLOAT3 pos)
 	return *std::max_element(distances, distances + 6);
 }
 
-bool Box_Boundary::check_collision(XMFLOAT3 pos)
+bool Box_Boundary::check_collision(XMFLOAT3 pos, XMFLOAT3 camPos)
 {
 	if (-pos.x < max_x.x && -pos.x > min_x.x
 		&&  -pos.y < max_y.y && -pos.y > min_y.y
@@ -322,8 +213,21 @@ float Coord_Boundary::calculate_distance(XMFLOAT3 pos)
 	return 1000000000.0f;
 }
 
-bool Coord_Boundary::check_collision(XMFLOAT3 pos)
+bool Coord_Boundary::check_collision(XMFLOAT3 pos, XMFLOAT3 camPos)
 {
+	//XMFLOAT3 intersect_point,P0,P1,d_vec;
+	//float d;
+	//for (int i = 0; i < this->num_vertices; i = i + 3)
+	//{
+	//	P0 = XMFLOAT3(-camPos.x, -camPos.y, -camPos.z);
+	//	P1 = XMFLOAT3(-pos.x, -pos.y , -pos.z);
+	//	if (intersect3D_RayTriangle(P0, P1, this->vertices[i].Pos, this->vertices[i + 1].Pos, this->vertices[i + 2].Pos, intersect_point) == 1)
+	//		/*d_vec = intersect_point - camPos;
+	//		d = sqrt(d_vec.x*d_vec.x + d_vec.y*d_vec.y + d_vec.z*d_vec.z);
+	//		if (d < 1)*/
+	//		return true;
+	//}
+
 	return false;
 }
 
@@ -334,4 +238,74 @@ void Coord_Boundary::transform_boundary(XMMATRIX & M, float scale_factor)
 		this->vertices[i].Pos  = mul(this->vertices[i].Pos,  M);
 		this->vertices[i].Norm = mul(this->vertices[i].Norm, M);
 	}
+}
+
+#define SMALL_NUM   0.00000001 // anything that avoids division overflow
+// intersect3D_RayTriangle(): find the 3D intersection of a line segment with a triangle
+//    Input:   2 points P0,P1 that define a line segment, and 3 points defining a triangle
+//    Output:  I = intersection point (when it exists)
+//    Return: -1 = triangle is degenerate (a segment or point)
+//             0 =  disjoint (no intersect)
+//             1 =  intersect in unique point I1
+//             2 =  are in the same plane
+int intersect3D_RayTriangle(const XMFLOAT3 P0, const XMFLOAT3 P1, const XMFLOAT3 V0, const XMFLOAT3 V1, const XMFLOAT3 V2, XMFLOAT3& I)
+{
+	XMVECTOR    u, v, n;              // triangle vectors
+	XMVECTOR    dir, w0, w;           // ray vectors
+	XMVECTOR    null_vector = XMLoadFloat3(&XMFLOAT3(0, 0, 0));
+	float     r, a, b;              // params to calc ray-plane intersect
+
+	// get triangle edge vectors and plane normal
+	//XMFLOAT3 t0 = V1 - V0;
+	//XMFLOAT3 t1 = V2 - V0;
+	u = XMLoadFloat3(&(V1 - V0));
+	v = XMLoadFloat3(&(V2 - V0));
+	n = XMVector3Cross(u, v);		// cross product
+
+	UINT comparisonResult; 
+	XMVectorEqualR(&comparisonResult, n, null_vector);
+	if (XMComparisonAllTrue(comparisonResult))             // triangle is degenerate
+		return -1;                  // do not deal with this case
+
+	dir = XMLoadFloat3(&(P1 - P0));              // ray direction vector
+	w0 = XMLoadFloat3(&(P0 - V0));
+
+	a = - XMVectorGetX( XMVector3Dot(n, w0));
+	b = XMVectorGetX(XMVector3Dot(n, dir));
+	if (fabs(b) < SMALL_NUM) {     // ray is  parallel to triangle plane
+		if (a == 0)                 // ray lies in triangle plane
+			return 2;
+		else return 0;              // ray disjoint from plane
+	}
+
+	// get intersect point of ray with triangle plane
+	r = a / b;
+	if (r < 0.0 || 1.0 < r)                    // ray goes away from triangle
+		return 0;                   // => no intersect
+	// for a segment, also test if (r > 1.0) => no intersect
+
+	XMFLOAT3 dir_f3;
+	XMStoreFloat3(&dir_f3, dir);
+	I = P0 + XMFLOAT3(r * dir_f3.x, r * dir_f3.y, r * dir_f3.z);// intersect point of ray and plane
+
+	// is I inside T?
+	float    uu, uv, vv, wu, wv, D;
+	uu = XMVectorGetX(XMVector3Dot(u, u));
+	uv = XMVectorGetX(XMVector3Dot(u, v));
+	vv = XMVectorGetX(XMVector3Dot(v, v));
+	w =	 XMLoadFloat3(&(I - V0));
+	wu = XMVectorGetX(XMVector3Dot(w, u));
+	wv = XMVectorGetX(XMVector3Dot(w, v));
+	D = uv * uv - uu * vv;
+
+	// get and test parametric coords
+	float s, t;
+	s = (uv * wv - vv * wu) / D;
+	if (s < 0.0 || s > 1.0)         // I is outside T
+		return 0;
+	t = (uv * wu - uu * wv) / D;
+	if (t < 0.0 || (s + t) > 1.0)  // I is outside T
+		return 0;
+
+	return 1;                       // I is in T
 }

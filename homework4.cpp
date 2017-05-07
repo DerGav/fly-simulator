@@ -85,9 +85,6 @@ Model								centerTable;
 Model								House;
 bool								update_boundaries = true;
 
-
-//Collision_Detection					collision_detection;
-
 bool closeEnough = false;
 int collected = 0;
 bool useBoost = false;
@@ -472,10 +469,6 @@ HRESULT InitDevice()
 	//D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
 
-	// initialize the collision detection vector before loading models
-	// should find a way to do this in constructor ...
-	// collision_detection.p_objectSpheres = cam.getObjectSpheres();
-
 	font.init(g_pd3dDevice, g_pImmediateContext, font.defaultFontMapDesc);
 	//Load skysphere
 	LoadCatmullClark(L"ccsphere.cmp", g_pd3dDevice, &g_pVertexBuffer_sky, &model_vertex_sky);
@@ -483,6 +476,7 @@ HRESULT InitDevice()
 	// load 3ds models
 	//Load3DS("house.3ds", g_pd3dDevice,&House.vertex_buffer,&House.vertex_count);
 	House.load_Model("house.3ds", g_pd3dDevice, COORD, FALSE);
+
 	table.load_Model("simpleTable.3ds", g_pd3dDevice, BOX, FALSE); // file name, g_p3dDevice, type of collision detection, gourad shading
 	centerTable.load_Model("centerTable/centerTable.3ds", g_pd3dDevice, BOX, FALSE);
 	
@@ -710,9 +704,6 @@ void CleanupDevice()
 
 void OnLBD(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT keyFlags)
 {
-
-
-
 
 }
 

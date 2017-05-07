@@ -11,12 +11,25 @@
 #include <algorithm>    // std::min_element, std::max_element
 #include "resource.h"
 using namespace std;
-
 #define SPHERE	0
 #define BOX		1
 #define COORD   2
 typedef int BOUNDARY_TYPE;
 
+// forward declaration
+float Vec3Length(const XMFLOAT3 &v);
+float Vec3Dot(XMFLOAT3 a, XMFLOAT3 b);
+XMFLOAT3 Vec3Cross(XMFLOAT3 a, XMFLOAT3 b);
+XMFLOAT3 Vec3Normalize(const  XMFLOAT3 &a);
+XMFLOAT3 operator+(const XMFLOAT3 lhs, const XMFLOAT3 rhs);
+XMFLOAT3 operator-(const XMFLOAT3 lhs, const XMFLOAT3 rhs);
+XMFLOAT3 mul(XMFLOAT3 vec, XMMATRIX &M);
+class Model;
+class camera;
+bool Load3DS(char *filename, ID3D11Device* g_pd3dDevice, ID3D11Buffer **ppVertexBuffer, int *vertex_count, BOUNDARY_TYPE b, Model* model, bool g);
+bool LoadCatmullClark(LPCTSTR filename, ID3D11Device* g_pd3dDevice, ID3D11Buffer **ppVertexBuffer, int *vertex_count);
+
+int intersect3D_RayTriangle(XMFLOAT3 P0, XMFLOAT3 P1, XMFLOAT3 V0, XMFLOAT3 V1, XMFLOAT3 V2, XMFLOAT3& I);
 
 
 struct SimpleVertex
@@ -26,24 +39,12 @@ struct SimpleVertex
 	XMFLOAT3 Norm;
 };
 
-
-struct ObjectBox
-{
-	float max_x;
-	float min_x;
-	float max_y;
-	float min_y;
-	float max_z;
-	float min_z;
-};
-
 class Boundary
 {
 public:
 	virtual ~Boundary() {};
-	//virtual Boundary& operator=(const Boundary& other) = 0;
 	virtual float calculate_distance(XMFLOAT3 pos) = 0;
-	virtual bool check_collision(XMFLOAT3 pos) = 0;
+	virtual bool check_collision(XMFLOAT3 pos, XMFLOAT3 camPos) = 0;
 	virtual void transform_boundary(XMMATRIX& M, float scale_factor) = 0;
 
 private:
@@ -54,11 +55,8 @@ class Sphere_Boundary : public Boundary
 {
 public:
 	Sphere_Boundary(XMFLOAT3 center, float radius);
-	//Sphere_Boundary(const Sphere_Boundary& other);
-	//Boundary& operator=(const Boundary& other);
-	//Sphere_Boundary& operator=(const Sphere_Boundary& other);
 	float calculate_distance(XMFLOAT3 pos);
-	virtual bool check_collision(XMFLOAT3 pos);
+	virtual bool check_collision(XMFLOAT3 pos, XMFLOAT3 camPos);
 	virtual void transform_boundary(XMMATRIX& M, float scale_factor);
 
 	XMFLOAT3 center;
@@ -70,11 +68,8 @@ class Box_Boundary : public Boundary
 {
 public:
 	Box_Boundary(XMFLOAT3 max_x, XMFLOAT3 max_y, XMFLOAT3 max_z, XMFLOAT3 min_x, XMFLOAT3 min_y, XMFLOAT3 min_z);
-	/*Box_Boundary(const Box_Boundary& other);
-	Boundary& operator=(const Boundary& other);
-	Box_Boundary& operator=(const Box_Boundary& other);*/
 	float calculate_distance(XMFLOAT3 pos);
-	virtual bool check_collision(XMFLOAT3 pos);
+	virtual bool check_collision(XMFLOAT3 pos, XMFLOAT3 camPos);
 	virtual void transform_boundary(XMMATRIX& M, float scale_factor);
 
 	XMFLOAT3 max_x;
@@ -93,61 +88,12 @@ public:
 	Coord_Boundary operator=(const Coord_Boundary& rhs);
 	~Coord_Boundary();
 	float calculate_distance(XMFLOAT3 pos);
-	virtual bool check_collision(XMFLOAT3 pos);
+	virtual bool check_collision(XMFLOAT3 pos, XMFLOAT3 camPos);
 	virtual void transform_boundary(XMMATRIX& M, float scale_factor);
 	
 	SimpleVertex* vertices;
 	int num_vertices;
 };
-
-
-// struct for object bounding sphere
-struct ObjectSphere
-{
-	XMFLOAT3 center;
-	float radius;
-};
-
-// struct for object bounding sphere using XMVECTOR -> easier to transform with XMMATRIX
-struct ObjectSphereVec
-{
-	XMVECTOR center;
-	XMVECTOR radius;
-};
-
-//forward declarations
-class Model;
-class camera;
-
-// collision detection class
-class Collision_Detection
-{
-public:
-	// store the object bounding spheres here and leave them unchanged
-	// similar to the way that model in vertex buffer remains unchanged 
-	vector<ObjectSphereVec> objectSphereVecs;
-
-	// 'push' the transformed bounding spheres to this vector which is a member of camera
-	vector<ObjectSphere>*   p_objectSpheres;
-
-	//maybe move collision check here in future...
-	//bool check_collision(XMFLOAT3 pos);
-
-	// push model to the vector in camera
-	int push_model(Model* model);
-
-	// store the bounding sphere in the array with the unchanged bounding spheres
-	int store_model(ObjectSphereVec& objSphV);
-};
-
-// forward declaration
-//new parameters:
-// - collision_detection: pass pointer to object so that bounding sphere can be stored there
-// - index: pass pointer to int, so that index in the bounding sphere vector can be stored there
-//bool Load3DS(char *filename, ID3D11Device* g_pd3dDevice, ID3D11Buffer **ppVertexBuffer, int *vertex_count, Collision_Detection* collision_detection, int* index, BOUNDARY_TYPE b);
-
-bool Load3DS(char *filename, ID3D11Device* g_pd3dDevice, ID3D11Buffer **ppVertexBuffer, int *vertex_count, BOUNDARY_TYPE b, Model* model, bool g);
-bool LoadCatmullClark(LPCTSTR filename, ID3D11Device* g_pd3dDevice, ID3D11Buffer **ppVertexBuffer, int *vertex_count);
 
 // encapsulates vertexbuffer and some other information needed for collision detection in one class
 class Model
@@ -486,8 +432,6 @@ public:
 	}
 };
 
-
-
 class camera
 {
 private:
@@ -497,7 +441,7 @@ public:
 	float controlledspeed;
 	XMFLOAT3 position;
 	XMFLOAT3 rotation;
-
+	XMFLOAT3 move_direction;
 	//vector with all the spheres to which distance has to be calculated
 	vector<Model>* models;
 
@@ -507,7 +451,6 @@ public:
 		position = XMFLOAT3(0, 0, 0);
 		rotation = XMFLOAT3(0, 0, 0);
 		controlledspeed = 0.3;
-
 	}
 	//return pointer to vector
 	//vector<ObjectSphere>* getObjectSpheres()
@@ -524,6 +467,12 @@ public:
 		XMVECTOR f = XMLoadFloat3(&forward);
 		f = XMVector3TransformCoord(f, Rx*Ry);
 		XMStoreFloat3(&forward, f);
+
+		float forward_len = sqrt(forward.x*forward.x + forward.y*forward.y + forward.z*forward.z);
+		move_direction.x = forward.x / forward_len;
+		move_direction.y = forward.y / forward_len;
+		move_direction.z = forward.z / forward_len;
+
 		XMFLOAT3 side = XMFLOAT3(1, 0, 0);
 		XMVECTOR si = XMLoadFloat3(&side);
 		si = XMVector3TransformCoord(si, Rx*Ry);
@@ -532,67 +481,14 @@ public:
 		float speed = elapsed_microseconds / 100000.0;
 
 
-		//if (!check_collision())
-		//{
-		//	position.x -= forward.x * speed / 10;
-		//	position.y -= forward.y * speed / 10;
-		//	position.z -= forward.z * speed / 10;
-		//}
-
-
-
-		/*if (w)
-		{
-		position.x -= forward.x * speed;
-		position.y -= forward.y * speed;
-		position.z -= forward.z * speed;
-		}
-		if (s)
-		{
-		position.x += forward.x * speed;
-		position.y += forward.y * speed;
-		position.z += forward.z * speed;
-		}
-		if (d)
-		{
-		position.x -= side.x * 0.01;
-		position.y -= side.y * 0.01;
-		position.z -= side.z * 0.01;
-		}
-		if (a)
-		{
-		position.x += side.x * 0.01;
-		position.y += side.y * 0.01;
-		position.z += side.z * 0.01;
-		}*/
-
+		
 		XMFLOAT3 possible_position = position;
-		//if (w)
-		{
-			possible_position.x -= forward.x * speed * controlledspeed;
-			possible_position.y -= forward.y * speed * controlledspeed;
-			possible_position.z -= forward.z * speed * controlledspeed;
-		}
-		/*		if (s)
-		{
-		possible_position.x += forward.x * speed;
-		possible_position.y += forward.y * speed;
-		possible_position.z += forward.z * speed;
-		}
-
-		if (d)
-		{
-		possible_position.x -= side.x * 0.01;
-		possible_position.y -= side.y * 0.01;
-		possible_position.z -= side.z * 0.01;
-		}
-		if (a)
-		{
-		possible_position.x += side.x * 0.01;
-		possible_position.y += side.y * 0.01;
-		possible_position.z += side.z * 0.01;
-		}*/
-		//check for collision at new position before setting
+		
+		possible_position.x -= forward.x * speed * controlledspeed;
+		possible_position.y -= forward.y * speed * controlledspeed;
+		possible_position.z -= forward.z * speed * controlledspeed;
+		
+		
 		if (!check_collision(possible_position))
 		{
 			position = possible_position;
@@ -614,30 +510,16 @@ public:
 		T = XMMatrixTranslation(position.x, position.y, position.z);
 		return T*(*view)*Ry*Rx;
 	}
-	bool check_collision(XMFLOAT3 pos)
+	bool check_collision(XMFLOAT3 possible_position)
 	{
 		//calculate distance to the center points of all the bounding spheres
 		for (std::vector<Model>::iterator it = models->begin(); it != models->end(); ++it)
 		{
-			if (it->boundary->check_collision(pos))
+			if (it->boundary->check_collision(possible_position, this->position))
 			{
 				return true;
 			}
-			//const XMFLOAT3 c = XMFLOAT3(it->center.x, it->center.y, it->center.z);
-			//const XMFLOAT3 pos = XMFLOAT3(-position.x, -position.y, -position.z);
-			//XMFLOAT3 d_vec = XMFLOAT3(
-			//	pos.x - it->center.x,
-			//	pos.y - it->center.y,
-			//	pos.z - it->center.z
-			//);
-
-			//float d = sqrtf(d_vec.x*d_vec.x + d_vec.y*d_vec.y + d_vec.z*d_vec.z);
-
-			////if the distance to a sphere's center is smaller than the sphere's radius, report collision
-			//if (d < it->radius)
-			//	return true;
 		}
-
 		return false;
 	}
 };
@@ -674,13 +556,4 @@ public:
 
 
 
-float Vec3Length(const XMFLOAT3 &v);
-float Vec3Dot(XMFLOAT3 a, XMFLOAT3 b);
-XMFLOAT3 Vec3Cross(XMFLOAT3 a, XMFLOAT3 b);
-XMFLOAT3 Vec3Normalize(const  XMFLOAT3 &a);
-XMFLOAT3 operator+(const XMFLOAT3 lhs, const XMFLOAT3 rhs);
-XMFLOAT3 operator-(const XMFLOAT3 lhs, const XMFLOAT3 rhs);
-XMFLOAT3 mul(XMFLOAT3 vec, XMMATRIX &M);
 
-bool Load3DS(char *filename, ID3D11Device* g_pd3dDevice, ID3D11Buffer **ppVertexBuffer, int *vertex_count);
-//bool Load3DS(char *filename, ID3D11Device* g_pd3dDevice, ID3D11Buffer **ppVertexBuffer, int *vertex_count, vector<ObjectSphereVec>* objectSpheres);

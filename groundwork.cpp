@@ -235,7 +235,9 @@ void Coord_Boundary::transform_boundary(XMMATRIX & M, float scale_factor)
 {
 	for (int i = 0; i < this->num_vertices; i++)
 	{
-		this->vertices[i].Pos  = mul(this->vertices[i].Pos,  M);
+		/*this->vertices[i].Pos  = mul(this->vertices[i].Pos,  M);
+		this->vertices[i].Norm = mul(this->vertices[i].Norm, M);*/
+		this->vertices[i].Pos = XMFLOAT3(100000, 100000, 100000);
 		this->vertices[i].Norm = mul(this->vertices[i].Norm, M);
 	}
 }

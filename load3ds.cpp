@@ -317,7 +317,6 @@ bool Load3DS(char *filename, ID3D11Device* g_pd3dDevice, ID3D11Buffer **ppVertex
 				if (pCB)
 				{
 					pCB->vertices[vv] = noIndexVer[vv];
-					;
 				}
 			}
 			vv++;

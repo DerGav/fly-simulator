@@ -1268,7 +1268,7 @@ void Render_to_texture(long elapsed)
 
 	//table
 	float scale = 15;
-	S = XMMatrixScaling(scale, scale , scale);
+	S = XMMatrixScaling(scale, scale, scale);
 	R = XMMatrixRotationX(-XM_PIDIV2);
 	T = XMMatrixTranslation(350, 5.6, -120);
 	M = S * R * T;
@@ -1285,7 +1285,7 @@ void Render_to_texture(long elapsed)
 	g_pImmediateContext->PSSetConstantBuffers(0, 1, &g_pCBuffer);
 	g_pImmediateContext->PSSetShaderResources(0, 1, &table.g_pTexture);
 	g_pImmediateContext->VSSetShaderResources(0, 1, &table.g_pTexture);
-	g_pImmediateContext->IASetVertexBuffers(0, 1,&table.vertex_buffer , &stride, &offset);
+	g_pImmediateContext->IASetVertexBuffers(0, 1, &table.vertex_buffer, &stride, &offset);
 	g_pImmediateContext->PSSetSamplers(0, 1, &g_pSamplerLinear);
 	g_pImmediateContext->VSSetSamplers(0, 1, &g_pSamplerLinear);
 
@@ -1333,12 +1333,16 @@ void Render_to_texture(long elapsed)
 	S = XMMatrixScaling(1, 1, 1);
 	R = XMMatrixTranslation(0, 0, 0);
 	T = XMMatrixRotationX(-XM_PIDIV2);
-	M = S * R * T ;
+	M = S * R * T;
+	//M = XMMatrixIdentity();
+
+
+
+	if (update_boundaries)
+		models[1].boundary->transform_boundary(M, 1);
 
 	constantbuffer.World = XMMatrixTranspose(M);
 
-	if (update_boundaries)
-		House.boundary->transform_boundary(M, 1);
 
 	g_pImmediateContext->UpdateSubresource(g_pCBuffer, 0, NULL, &constantbuffer, 0, 0);
 	// Render terrain
@@ -1364,7 +1368,11 @@ void Render_to_texture(long elapsed)
 		{
 		//constantbuffer.World = XMMatrixIdentity();
 		//	if (update_boundaries)
-		//	{
+		//	{	
+		//		S = XMMatrixScaling(1, 1, 1);
+		//		R = XMMatrixTranslation(0, 0, 0);
+		//		T = XMMatrixRotationX(-XM_PIDIV2);
+		//		M = S * R * T ;
 		//		House.boundary->transform_boundary(M, 1);
 		//		if (!render_boundary_test)
 		//		{

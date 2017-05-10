@@ -449,6 +449,7 @@ public:
 	{
 		w = s = a = d = 0;
 		position = XMFLOAT3(30, -30, 0);
+		//position = XMFLOAT3(30, -30, -50);
 		rotation = XMFLOAT3(0, 0, 0);
 		controlledspeed = 0.3;
 

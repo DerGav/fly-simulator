@@ -224,7 +224,7 @@ bool Coord_Boundary::check_collision(XMFLOAT3 pos, XMFLOAT3 camPos)
 		if (intersect3D_RayTriangle(P0, P1, this->vertices[i].Pos, this->vertices[i + 1].Pos, this->vertices[i + 2].Pos, intersect_point) == 1)
 			d_vec = intersect_point - camPos;
 			d = sqrt(d_vec.x*d_vec.x + d_vec.y*d_vec.y + d_vec.z*d_vec.z);
-			if (d < 90)
+			if (d < 400)
 			return true;
 	}
 
@@ -235,10 +235,10 @@ void Coord_Boundary::transform_boundary(XMMATRIX & M, float scale_factor)
 {
 	for (int i = 0; i < this->num_vertices; i++)
 	{
-		/*this->vertices[i].Pos  = mul(this->vertices[i].Pos,  M);
-		this->vertices[i].Norm = mul(this->vertices[i].Norm, M);*/
-		this->vertices[i].Pos = XMFLOAT3(100000, 100000, 100000);
+		this->vertices[i].Pos  = mul(this->vertices[i].Pos,  M);
 		this->vertices[i].Norm = mul(this->vertices[i].Norm, M);
+		//this->vertices[i].Pos = XMFLOAT3(100000, 100000, 100000);
+		//this->vertices[i].Norm = mul(this->vertices[i].Norm, M);
 	}
 }
 

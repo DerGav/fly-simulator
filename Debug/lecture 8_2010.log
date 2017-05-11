@@ -1,8 +1,8 @@
-﻿Build started 5/9/2017 5:45:01 PM.
+﻿Build started 5/11/2017 2:56:14 PM.
      1>Project "C:\Users\Administrator\Desktop\fly-simulator\lecture 8_2010.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IDXUT\Core /IDXUT\Optional /ZI /nologo /W4 /WX- /Od /Oi /Oy- /D WIN32 /D _DEBUG /D DEBUG /D PROFILE /D _WINDOWS /D D3DXFX_LARGEADDRESS_HANDLE /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /arch:SSE2 /fp:fast /Zc:wchar_t /Zc:forScope /openmp- /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt  homework4.cpp
-         homework4.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IDXUT\Core /IDXUT\Optional /ZI /nologo /W4 /WX- /Od /Oi /Oy- /D WIN32 /D _DEBUG /D DEBUG /D PROFILE /D _WINDOWS /D D3DXFX_LARGEADDRESS_HANDLE /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /arch:SSE2 /fp:fast /Zc:wchar_t /Zc:forScope /openmp- /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt  groundwork.cpp
+         groundwork.cpp
      1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(12): warning C4005: 'DXGI_STATUS_OCCLUDED' : macro redefinition
                  c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50002) : see previous definition of 'DXGI_STATUS_OCCLUDED'
      1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(13): warning C4005: 'DXGI_STATUS_CLIPPED' : macro redefinition
@@ -75,54 +75,21 @@
      1>c:\users\administrator\desktop\fly-simulator\groundwork.h(552): warning C4244: '=' : conversion from 'double' to 'FLOAT', possible loss of data
      1>c:\users\administrator\desktop\fly-simulator\groundwork.h(553): warning C4244: '=' : conversion from 'double' to 'FLOAT', possible loss of data
      1>c:\users\administrator\desktop\fly-simulator\groundwork.h(554): warning C4244: '=' : conversion from 'double' to 'FLOAT', possible loss of data
-     1>c:\users\administrator\desktop\fly-simulator\controller.h(106): warning C4244: '=' : conversion from 'int' to 'WORD', possible loss of data
-     1>c:\users\administrator\desktop\fly-simulator\controller.h(107): warning C4244: '=' : conversion from 'int' to 'WORD', possible loss of data
-     1>c:\users\administrator\desktop\fly-simulator\font.h(179): warning C4512: 'Font' : assignment operator could not be generated
-                 c:\users\administrator\desktop\fly-simulator\font.h(28) : see declaration of 'Font'
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(122): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(490): warning C4189: 'vertices' : local variable is initialized but not referenced
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(707): warning C4100: 'keyFlags' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(707): warning C4100: 'y' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(707): warning C4100: 'x' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(707): warning C4100: 'fDoubleClick' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(707): warning C4100: 'hwnd' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(715): warning C4100: 'keyFlags' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(715): warning C4100: 'y' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(715): warning C4100: 'x' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(715): warning C4100: 'fDoubleClick' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(715): warning C4100: 'hwnd' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(722): warning C4100: 'cRepeat' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(722): warning C4100: 'ch' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(722): warning C4100: 'hwnd' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(729): warning C4100: 'keyFlags' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(729): warning C4100: 'y' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(729): warning C4100: 'x' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(729): warning C4100: 'hwnd' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(737): warning C4100: 'keyFlags' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(737): warning C4100: 'y' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(737): warning C4100: 'x' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(737): warning C4100: 'hwnd' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(777): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(778): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(789): warning C4100: 'lpCreateStruct' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(804): warning C4100: 'id' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(804): warning C4100: 'hwnd' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(809): warning C4100: 'flags' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(809): warning C4100: 'cRepeat' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(809): warning C4100: 'fDown' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(809): warning C4100: 'hwnd' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(837): warning C4100: 'flags' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(837): warning C4100: 'cRepeat' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(837): warning C4100: 'fDown' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(837): warning C4100: 'hwnd' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(1198): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(1183): warning C4100: 'elapsed' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(1510): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(1493): warning C4100: 'elapsed' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(1721): warning C4100: 'elapsed' : unreferenced formal parameter
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(1776): warning C4244: 'initializing' : conversion from 'long double' to 'long', possible loss of data
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(1779): warning C4244: 'argument' : conversion from 'long' to 'float', possible loss of data
-     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(1787): warning C4100: 'x' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(99): warning C4100: 'camPos' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(138): warning C4100: 'camPos' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(150): warning C4100: 'scale_factor' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(205): warning C4244: '=' : conversion from 'double' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(206): warning C4244: '=' : conversion from 'double' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(207): warning C4244: '=' : conversion from 'double' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(211): warning C4100: 'pos' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(234): warning C4100: 'scale_factor' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(257): warning C4238: nonstandard extension used : class rvalue used as lvalue
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(263): warning C4238: nonstandard extension used : class rvalue used as lvalue
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(264): warning C4238: nonstandard extension used : class rvalue used as lvalue
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(272): warning C4238: nonstandard extension used : class rvalue used as lvalue
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(274): warning C4238: nonstandard extension used : class rvalue used as lvalue
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(299): warning C4238: nonstandard extension used : class rvalue used as lvalue
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(273): warning C4189: 'dir_len' : local variable is initialized but not referenced
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Administrator\Desktop\fly-simulator\Debug\homework 4.exe" /INCREMENTAL /NOLOGO d3d11.lib d3dcompiler.lib d3dx11d.lib d3dx9d.lib dxerr.lib dxguid.lib winmm.lib comctl32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /manifestinput:"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\Include\Manifest\dpiaware.manifest" /DEBUG /PDB:"C:\Users\Administrator\Desktop\fly-simulator\Debug\homework 4.pdb" /SUBSYSTEM:WINDOWS /LARGEADDRESSAWARE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Administrator\Desktop\fly-simulator\Debug\homework 4.lib" /MACHINE:X86 /SAFESEH  "Debug\homework 8.res"
          Debug\Font.obj
@@ -135,4 +102,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.40
+Time Elapsed 00:00:01.20

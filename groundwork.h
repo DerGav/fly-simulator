@@ -29,7 +29,7 @@ class camera;
 bool Load3DS(char *filename, ID3D11Device* g_pd3dDevice, ID3D11Buffer **ppVertexBuffer, int *vertex_count, BOUNDARY_TYPE b, Model* model, bool g);
 bool LoadCatmullClark(LPCTSTR filename, ID3D11Device* g_pd3dDevice, ID3D11Buffer **ppVertexBuffer, int *vertex_count);
 
-int intersect3D_RayTriangle(XMFLOAT3 P0, XMFLOAT3 P1, XMFLOAT3 V0, XMFLOAT3 V1, XMFLOAT3 V2, XMFLOAT3& I);
+int intersect3D_RayTriangle(const XMFLOAT3 P0, const XMFLOAT3 P1, const XMFLOAT3 V0, const XMFLOAT3 V1, const XMFLOAT3 V2, XMFLOAT3& intersection_point, XMFLOAT3& normal_at_intersection);
 
 
 struct SimpleVertex
@@ -44,7 +44,7 @@ class Boundary
 public:
 	virtual ~Boundary() {};
 	virtual float calculate_distance(XMFLOAT3 pos) = 0;
-	virtual bool check_collision(XMFLOAT3 pos, XMFLOAT3 camPos) = 0;
+	virtual bool check_collision(XMFLOAT3 pos, XMFLOAT3 camPos, XMFLOAT3* normal_at_intersection) = 0;
 	virtual void transform_boundary(XMMATRIX& M, float scale_factor) = 0;
 
 private:
@@ -56,7 +56,7 @@ class Sphere_Boundary : public Boundary
 public:
 	Sphere_Boundary(XMFLOAT3 center, float radius);
 	float calculate_distance(XMFLOAT3 pos);
-	virtual bool check_collision(XMFLOAT3 pos, XMFLOAT3 camPos);
+	virtual bool check_collision(XMFLOAT3 pos, XMFLOAT3 camPos, XMFLOAT3* normal_at_intersection);
 	virtual void transform_boundary(XMMATRIX& M, float scale_factor);
 
 	XMFLOAT3 center;
@@ -69,7 +69,7 @@ class Box_Boundary : public Boundary
 public:
 	Box_Boundary(XMFLOAT3 max_x, XMFLOAT3 max_y, XMFLOAT3 max_z, XMFLOAT3 min_x, XMFLOAT3 min_y, XMFLOAT3 min_z);
 	float calculate_distance(XMFLOAT3 pos);
-	virtual bool check_collision(XMFLOAT3 pos, XMFLOAT3 camPos);
+	virtual bool check_collision(XMFLOAT3 pos, XMFLOAT3 camPos, XMFLOAT3* normal_at_intersection);
 	virtual void transform_boundary(XMMATRIX& M, float scale_factor);
 
 	XMFLOAT3 max_x;
@@ -88,7 +88,7 @@ public:
 	Coord_Boundary operator=(const Coord_Boundary& rhs);
 	~Coord_Boundary();
 	float calculate_distance(XMFLOAT3 pos);
-	virtual bool check_collision(XMFLOAT3 pos, XMFLOAT3 camPos);
+	virtual bool check_collision(XMFLOAT3 pos, XMFLOAT3 camPos, XMFLOAT3* normal_at_intersection);
 	virtual void transform_boundary(XMMATRIX& M, float scale_factor);
 	
 	SimpleVertex* vertices;
@@ -442,6 +442,7 @@ public:
 	XMFLOAT3 position;
 	XMFLOAT3 rotation;
 	XMFLOAT3 move_direction;
+	bool flying;
 	//vector with all the spheres to which distance has to be calculated
 	vector<Model>* models;
 
@@ -451,8 +452,8 @@ public:
 		position = XMFLOAT3(30, -30, 0);
 		//position = XMFLOAT3(30, -30, -50);
 		rotation = XMFLOAT3(0, 0, 0);
-		controlledspeed = 0.3;
-
+		controlledspeed = 0.8;
+		flying = true;
 		//XMFLOAT3 p0, p1, v0, v1, v2, i;
 		//p0 = XMFLOAT3(0,  1, 0);
 		//p1 = XMFLOAT3(0,  0, 0);
@@ -470,35 +471,53 @@ public:
 	//}
 	void animation(float elapsed_microseconds)
 	{
-		XMMATRIX Ry, Rx, T;
-		Ry = XMMatrixRotationY(-rotation.y);
-		Rx = XMMatrixRotationX(-rotation.x);
-
-		XMFLOAT3 forward = XMFLOAT3(0, 0, 1);
-		XMVECTOR f = XMLoadFloat3(&forward);
-		f = XMVector3TransformCoord(f, Rx*Ry);
-		XMStoreFloat3(&forward, f);
-
-		float forward_len = sqrt(forward.x*forward.x + forward.y*forward.y + forward.z*forward.z);
-		move_direction.x = forward.x / forward_len;
-		move_direction.y = forward.y / forward_len;
-		move_direction.z = forward.z / forward_len;
-
-		XMFLOAT3 side = XMFLOAT3(1, 0, 0);
-		XMVECTOR si = XMLoadFloat3(&side);
-		si = XMVector3TransformCoord(si, Rx*Ry);
-		XMStoreFloat3(&side, si);
-
+		XMFLOAT3 possible_position;
+		XMFLOAT3 forward;
 		float speed = elapsed_microseconds / 100000.0;
 
+		if (flying)
+		{
+			XMMATRIX Ry, Rx, T;
+			Ry = XMMatrixRotationY(-rotation.y);
+			Rx = XMMatrixRotationX(-rotation.x);
+			//Rx = XMMatrixIdentity();
+			forward = XMFLOAT3(0, 0, 1);
+			XMVECTOR f = XMLoadFloat3(&forward);
+			f = XMVector3TransformCoord(f, Rx*Ry);
+			XMStoreFloat3(&forward, f);
 
-		
-		XMFLOAT3 possible_position = position;
-		
-		possible_position.x -= forward.x * speed * controlledspeed;
-		possible_position.y -= forward.y * speed * controlledspeed;
-		possible_position.z -= forward.z * speed * controlledspeed;
-		
+		/*	float forward_len = sqrt(forward.x*forward.x + forward.y*forward.y + forward.z*forward.z);
+			move_direction.x = forward.x / forward_len;
+			move_direction.y = forward.y / forward_len;
+			move_direction.z = forward.z / forward_len;*/
+
+			XMFLOAT3 side = XMFLOAT3(1, 0, 0);
+			XMVECTOR si = XMLoadFloat3(&side);
+			si = XMVector3TransformCoord(si, Rx*Ry);
+			XMStoreFloat3(&side, si);
+
+			
+
+
+
+			possible_position = position;
+
+			possible_position.x -= forward.x * speed * controlledspeed;
+			possible_position.y -= forward.y * speed * controlledspeed;
+			possible_position.z -= forward.z * speed * controlledspeed;
+		}
+		else
+		{
+			possible_position = position;
+		/*	rotation.y = atan(move_direction.z / move_direction.x); 
+			rotation.x = atan(move_direction.y / move_direction.z);*/
+			if (w)
+			{
+				possible_position.x -= move_direction.x * speed;
+				possible_position.y -= move_direction.y * speed;
+				possible_position.z -= move_direction.z * speed;
+			}
+		}
 		
 		if (!check_collision(possible_position))
 		{
@@ -523,11 +542,26 @@ public:
 	}
 	bool check_collision(XMFLOAT3 possible_position)
 	{
+		XMFLOAT3 normal_at_intersection;
 		//calculate distance to the center points of all the bounding spheres
 		for (std::vector<Model>::iterator it = models->begin(); it != models->end(); ++it)
 		{
-			if (it->boundary->check_collision(possible_position, this->position))
+			if (it->boundary->check_collision(possible_position, this->position, &normal_at_intersection))
 			{
+				const Coord_Boundary *pCB = dynamic_cast<const Coord_Boundary*>(it->boundary);
+				if (pCB)
+				{
+					flying = false;
+					//rotate cam, so that walking on walls
+					XMVECTOR result, normal, move_vec;
+					XMFLOAT3 new_move;
+					normal = XMLoadFloat3(&normal_at_intersection);
+					move_vec = XMLoadFloat3(&move_direction);
+					result = XMVector3Cross(normal, move_vec);
+					XMStoreFloat3(&new_move, move_vec);
+					//move_direction = new_move;
+				}
+
 				return true;
 			}
 		}

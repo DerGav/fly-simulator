@@ -96,8 +96,9 @@ float Sphere_Boundary::calculate_distance(XMFLOAT3 pos)
 	return d_center - radius;
 }
 
-bool Sphere_Boundary::check_collision(XMFLOAT3 pos, XMFLOAT3 camPos)
+bool Sphere_Boundary::check_collision(XMFLOAT3 pos, XMFLOAT3 camPos, XMFLOAT3* normal_at_intersection)
 {
+	*normal_at_intersection = XMFLOAT3(0, 0, 0);
 	if (calculate_distance(XMFLOAT3(-pos.x, -pos.y, -pos.z)) < radius)
 		return true;
 
@@ -135,8 +136,9 @@ float Box_Boundary::calculate_distance(XMFLOAT3 pos)
 	return *std::max_element(distances, distances + 6);
 }
 
-bool Box_Boundary::check_collision(XMFLOAT3 pos, XMFLOAT3 camPos)
+bool Box_Boundary::check_collision(XMFLOAT3 pos, XMFLOAT3 camPos, XMFLOAT3* normal_at_intersection)
 {
+	*normal_at_intersection = XMFLOAT3(0, 0, 0);
 	if (-pos.x < max_x.x && -pos.x > min_x.x
 		&&  -pos.y < max_y.y && -pos.y > min_y.y
 		&&	-pos.z < max_z.z && -pos.z > min_z.z)
@@ -213,15 +215,15 @@ float Coord_Boundary::calculate_distance(XMFLOAT3 pos)
 	return 1000000000.0f;
 }
 
-bool Coord_Boundary::check_collision(XMFLOAT3 pos, XMFLOAT3 camPos)
+bool Coord_Boundary::check_collision(XMFLOAT3 pos, XMFLOAT3 camPos, XMFLOAT3* normal_at_intersection)
 {
-	XMFLOAT3 intersect_point,P0,P1,d_vec;
+	XMFLOAT3 intersect_point, P0,P1,d_vec;
 	float d;
 	for (int i = 0; i < this->num_vertices; i = i + 3)
 	{
 		P0 = XMFLOAT3(-camPos.x, -camPos.y, -camPos.z);
 		P1 = XMFLOAT3(-pos.x, -pos.y, -pos.z);
-		if (intersect3D_RayTriangle(P0, P1, this->vertices[i].Pos, this->vertices[i + 1].Pos, this->vertices[i + 2].Pos, intersect_point) == 1)
+		if (intersect3D_RayTriangle(P0, P1, this->vertices[i].Pos, this->vertices[i + 1].Pos, this->vertices[i + 2].Pos, intersect_point, *normal_at_intersection) == 1)
 			return true;
 	}
 
@@ -245,12 +247,15 @@ void Coord_Boundary::transform_boundary(XMMATRIX & M, float scale_factor)
 //             0 =  disjoint (no intersect)
 //             1 =  intersect in unique point I1
 //             2 =  are in the same plane
-int intersect3D_RayTriangle(const XMFLOAT3 P0, const XMFLOAT3 P1, const XMFLOAT3 V0, const XMFLOAT3 V1, const XMFLOAT3 V2, XMFLOAT3& I)
+int intersect3D_RayTriangle(const XMFLOAT3 P0, const XMFLOAT3 P1, const XMFLOAT3 V0, const XMFLOAT3 V1, const XMFLOAT3 V2, XMFLOAT3& intersection_point, XMFLOAT3& normal_at_intersection)
 {
 	XMVECTOR    u, v, n;              // triangle vectors
 	XMVECTOR    dir, w0, w;           // ray vectors
 	XMVECTOR    null_vector = XMLoadFloat3(&XMFLOAT3(0, 0, 0));
 	float     r, a, b;              // params to calc ray-plane intersect
+
+	//init normal
+	normal_at_intersection = XMFLOAT3(0,0,0);
 
 	// get triangle edge vectors and plane normal
 	//XMFLOAT3 t0 = V1 - V0;
@@ -284,14 +289,14 @@ int intersect3D_RayTriangle(const XMFLOAT3 P0, const XMFLOAT3 P1, const XMFLOAT3
 
 	XMFLOAT3 dir_f3;
 	XMStoreFloat3(&dir_f3, dir);
-	I = P0 + XMFLOAT3(r * dir_f3.x, r * dir_f3.y, r * dir_f3.z);// intersect point of ray and plane
+	intersection_point = P0 + XMFLOAT3(r * dir_f3.x, r * dir_f3.y, r * dir_f3.z);// intersect point of ray and plane
 
-	// is I inside T?
+	// is intersection_point inside T?
 	float    uu, uv, vv, wu, wv, D;
 	uu = XMVectorGetX(XMVector3Dot(u, u));
 	uv = XMVectorGetX(XMVector3Dot(u, v));
 	vv = XMVectorGetX(XMVector3Dot(v, v));
-	w =	 XMLoadFloat3(&(I - V0));
+	w =	 XMLoadFloat3(&(intersection_point - V0));
 	wu = XMVectorGetX(XMVector3Dot(w, u));
 	wv = XMVectorGetX(XMVector3Dot(w, v));
 	D = uv * uv - uu * vv;
@@ -299,11 +304,12 @@ int intersect3D_RayTriangle(const XMFLOAT3 P0, const XMFLOAT3 P1, const XMFLOAT3
 	// get and test parametric coords
 	float s, t;
 	s = (uv * wv - vv * wu) / D;
-	if (s < 0.0 || s > 1.0)         // I is outside T
+	if (s < 0.0 || s > 1.0)         // intersection_point is outside T
 		return 0;
 	t = (uv * wu - uu * wv) / D;
-	if (t < 0.0 || (s + t) > 1.0)  // I is outside T
+	if (t < 0.0 || (s + t) > 1.0)  // intersection_point is outside T
 		return 0;
 
-	return 1;                       // I is in T
+	XMStoreFloat3(&normal_at_intersection, n);
+	return 1;                       // intersection_point is in T
 }

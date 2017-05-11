@@ -479,7 +479,7 @@ HRESULT InitDevice()
 	//Load3DS("house.3ds", g_pd3dDevice,&House.vertex_buffer,&House.vertex_count);
 	House.load_Model("house.3ds", g_pd3dDevice, COORD, FALSE);
 
-	table.load_Model("simpleTable.3ds", g_pd3dDevice, BOX, FALSE); // file name, g_p3dDevice, type of collision detection, gourad shading
+	table.load_Model("simpleTable.3ds", g_pd3dDevice, COORD, FALSE); // file name, g_p3dDevice, type of collision detection, gourad shading
 	centerTable.load_Model("centerTable/centerTable.3ds", g_pd3dDevice, BOX, FALSE);
 	
 	models.push_back(table);

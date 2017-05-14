@@ -490,31 +490,51 @@ public:
 			//if there was a collision
 			if (hit)
 			{
-				
+				static float t = 0;
 				static int time = 0;
+				
 				time += elapsed_microseconds;
-				int max_time = 2500000;
-				if (time > 2500000)
+				int max_time = 2250000;
+				
+				if (time > max_time)
 				{
 					hit = false;
 					controlledspeed = 0.8;
 					speedMultiplier = 1;
-
+					rotation.z = 0;
+					t = 0;
+					time = 0;
+				/*	if (rotation.z > 0)
+					{
+							rotation.z -= 0.1;
+						
+					}
+					else
+					{
+						rotation.z = 0;
+						hit = false;
+					}*/
 				}
 
         		position.x += forward.x *speed;
 				position.y += forward.y *speed;
 				position.z += forward.z *speed;
 
-				if ( time <(max_time/4))
-					rotation.z += speed/10;
-				else if (time <(max_time / 2))
-					rotation.z -= speed / 10;
-				else if (time <((3 *max_time) / 4))
-					rotation.z += speed / 10;
-				else if (time < max_time )
-					rotation.z -= speed / 10;
+				//if (time < (max_time / 4))
+				//	t += 0.1;
+				//	//rotation.z += speed/10;
+				//else if (time <(max_time / 2))
+				//	t += 0.1;
+				//	//rotation.z -= speed / 10;
+				//else if (time <((3 *max_time) / 4))
+				//	t += 0.1;
+				//	//rotation.z += speed / 10;
+				//else if (time < max_time )
+				//	t += 0.1;
+				//	//rotation.z -= speed / 10;
+				t += 0.2;
 
+				rotation.z = sin(t) *speed;
 				XMVECTOR f = XMLoadFloat3(&forward);
 				f = XMVector3TransformCoord(f, Rx*Ry);
 				XMStoreFloat3(&forward, f);
@@ -674,7 +694,7 @@ public:
 				}
 				else
 				{
-					hit = true;
+					//hit = true;
 				}
 				return true;
 			}

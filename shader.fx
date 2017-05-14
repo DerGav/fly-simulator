@@ -216,7 +216,11 @@ float4 PS_screen(PS_INPUT input) : SV_Target
 	glowsum.a = 1;
 	glowsum = saturate(glowsum);
 	//return glowsum;
-	float4 tex = txDiffuse.SampleLevel(samLinear, input.Tex, 0);
+	float4 tex;
+	if (!info.r)
+		tex = txDiffuse.SampleLevel(samLinear, input.Tex, 0);
+	else
+		tex = txDiffuse.SampleLevel(samLinear, input.Tex, 4);
 
 
 	float2 coord = input.Tex - float2(0.5, 0.5);
@@ -232,7 +236,7 @@ float4 PS_screen(PS_INPUT input) : SV_Target
 	bwcolor.r = aver;
 	bwcolor.g = aver;
 	bwcolor.b = aver;
-	dist = pow(dist, 2);
+	dist = pow(dist, 0.8);
 	float3 result = bwcolor * dist + tex.rgb * (1.0 - dist);
 	return float4(result, 1);
 

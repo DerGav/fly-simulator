@@ -1377,69 +1377,7 @@ void Render_to_texture(long elapsed)
 	g_pImmediateContext->OMSetDepthStencilState(ds_on, 1);
 	g_pImmediateContext->Draw(House.vertex_count, 0);
 
-	//RENDER THE HOUSE BOUNDARY FOR DEBUGGING PURPOSES
-	//COMMENT OUT USUALLY
-		{
-		//constantbuffer.World = XMMatrixIdentity();
-		//	if (update_boundaries)
-		//	{	
-		//		S = XMMatrixScaling(1, 1, 1);
-		//		R = XMMatrixTranslation(0, 0, 0);
-		//		T = XMMatrixRotationX(-XM_PIDIV2);
-		//		M = S * R * T ;
-		//		House.boundary->transform_boundary(M, 1);
-		//		if (!render_boundary_test)
-		//		{
-		//			Coord_Boundary *pCB = dynamic_cast<Coord_Boundary*>(House.boundary);
-
-		//			render_boundary_test = true;
-
-		//			if (pCB)
-		//			{
-		//				HRESULT hr = S_OK;
-		//				//initialize d3dx verexbuff:
-		//				D3D11_BUFFER_DESC bd;
-		//				ZeroMemory(&bd, sizeof(bd));
-		//				bd.Usage = D3D11_USAGE_DEFAULT;
-		//				bd.ByteWidth = sizeof(SimpleVertex)* pCB->num_vertices;
-		//				bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		//				bd.CPUAccessFlags = 0;
-		//				D3D11_SUBRESOURCE_DATA InitData;
-		//				ZeroMemory(&InitData, sizeof(InitData));
-		//				InitData.pSysMem = pCB->vertices;
-		//				hr = g_pd3dDevice->CreateBuffer(&bd, &InitData, &g_pVertexBuffer_test);
-		//				if (FAILED(hr))
-		//					return;
-
-		//				//D3D11_BUFFER_DESC bd;
-		//				ZeroMemory(&bd, sizeof(bd));
-		//			}
-		//		}
-		//	}
-
-		//	if (render_boundary_test)
-		//	{
-
-		//		g_pImmediateContext->UpdateSubresource(g_pCBuffer, 0, NULL, &constantbuffer, 0, 0);
-		//		// Render terrain
-		//		g_pImmediateContext->VSSetShader(g_pVertexShader, NULL, 0);
-		//		g_pImmediateContext->PSSetShader(g_pPixelShader, NULL, 0);
-		//		g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pCBuffer);
-		//		g_pImmediateContext->PSSetConstantBuffers(0, 1, &g_pCBuffer);
-		//		g_pImmediateContext->PSSetShaderResources(0, 1, &House.g_pTexture);
-		//		g_pImmediateContext->VSSetShaderResources(0, 1, &House.g_pTexture);
-
-		//		ID3D11ShaderResourceView*           texture = ShadowMap.GetShaderResourceView();// THE MAGIC
-		//		g_pImmediateContext->PSSetShaderResources(1, 1, &texture);
-
-		//		g_pImmediateContext->IASetVertexBuffers(0, 1, &g_pVertexBuffer_test, &stride, &offset);
-		//		g_pImmediateContext->PSSetSamplers(0, 1, &g_pSamplerLinear);
-		//		g_pImmediateContext->VSSetSamplers(0, 1, &g_pSamplerLinear);
-
-		//		g_pImmediateContext->OMSetDepthStencilState(ds_on, 1);
-		//		g_pImmediateContext->Draw(House.vertex_count, 0);
-		//	}
-		}
+	
 	//for (int x = 1; x <= 3; x++) { // change x < Num to # number of items
 
 	//	M = models[x].scale * models[x].rotate * models[x].translate;
@@ -1743,6 +1681,7 @@ void Render_to_screen(long elapsed)
 	constantbuffer.View = XMMatrixTranspose(view);
 	constantbuffer.Projection = XMMatrixTranspose(g_Projection);
 	constantbuffer.LightView = XMMatrixTranspose(g_Light);  
+	constantbuffer.info.x = cam.hit;
 //constantbuffer.CameraPos = XMFLOAT4(cam.position.x, cam.position.y, cam.position.z, 1);
 
 	g_pImmediateContext->OMSetRenderTargets(1, &g_pRenderTargetView, g_pDepthStencilView);
@@ -1792,7 +1731,7 @@ void Render()
 
 	cam.animation(elapsed);
 
-	//Render_to_shadowmap(elapsed);
+	Render_to_shadowmap(elapsed);
 	Render_to_texture(elapsed);
 	Render_to_screen(elapsed);
 }

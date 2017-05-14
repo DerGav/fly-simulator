@@ -444,6 +444,7 @@ public:
 	XMFLOAT3 rotation;
 	XMFLOAT3 move_direction;
 	bool flying;
+	int hit;
 	//vector with all the spheres to which distance has to be calculated
 	vector<Model>* models;
 
@@ -455,6 +456,7 @@ public:
 		rotation = XMFLOAT3(0, 0, 0);
 		controlledspeed = 0.8;
 		flying = true;
+		hit = 0;
 
 	}
 
@@ -473,7 +475,7 @@ public:
 			//Rx = XMMatrixIdentity();
 			forward = XMFLOAT3(0, 0, 1);
 			XMVECTOR f = XMLoadFloat3(&forward);
-			f = XMVector3TransformCoord(f, Rx*Ry);
+			f = XMVector3TransformCoord(f, Rx*Ry*Rz);
 			XMStoreFloat3(&forward, f);
 
 		/*	float forward_len = sqrt(forward.x*forward.x + forward.y*forward.y + forward.z*forward.z);*/
@@ -485,8 +487,41 @@ public:
 			si = XMVector3TransformCoord(si, Rx*Ry);
 			XMStoreFloat3(&side, si);
 
-			
+			//if there was a collision
+			if (hit)
+			{
+				
+				static int time = 0;
+				time += elapsed_microseconds;
+				int max_time = 2500000;
+				if (time > 2500000)
+				{
+					hit = false;
+					controlledspeed = 0.8;
+					speedMultiplier = 1;
 
+				}
+
+        		position.x += forward.x *speed;
+				position.y += forward.y *speed;
+				position.z += forward.z *speed;
+
+				if ( time <(max_time/4))
+					rotation.z += speed/10;
+				else if (time <(max_time / 2))
+					rotation.z -= speed / 10;
+				else if (time <((3 *max_time) / 4))
+					rotation.z += speed / 10;
+				else if (time < max_time )
+					rotation.z -= speed / 10;
+
+				XMVECTOR f = XMLoadFloat3(&forward);
+				f = XMVector3TransformCoord(f, Rx*Ry);
+				XMStoreFloat3(&forward, f);
+
+
+				return;
+			}
 
 
 			possible_position = position;
@@ -495,15 +530,25 @@ public:
 		{
 			if (w)
 			{
-				if (controlledspeed < 3)
+				if (controlledspeed < 4)
 					controlledspeed += 0.5;
+				else
+					controlledspeed = 4;
 			}
 			if (s)
 			{
 				if (controlledspeed > 0.5)
-					controlledspeed -= 0.5;
+					controlledspeed -= 0.005;
 				else
 					controlledspeed = 0.5;
+			}
+			if (a)
+			{
+				rotation.z -= speed/10;
+			}
+			if (d)
+			{
+				rotation.z += speed / 10;
 			}
 			possible_position.x -= forward.x * speed * controlledspeed * speedMultiplier;
 			possible_position.y -= forward.y * speed * controlledspeed * speedMultiplier;
@@ -528,9 +573,9 @@ public:
 		//for now move player back a bit in case of collision
 		else
 		{
-			position.x += forward.x;
+			/*position.x += forward.x;
 			position.y += forward.y;
-			position.z += forward.z;
+			position.z += forward.z;*/
 		}
 
 	}
@@ -554,47 +599,83 @@ public:
 				const Coord_Boundary *pCB = dynamic_cast<const Coord_Boundary*>(it->boundary);
 				if (pCB)
 				{
-					flying = false;
-					//rotate cam, so that walking on walls
-					XMVECTOR result,cross, normal_vec, move_vec;
-					XMFLOAT3 new_move, normal;
-					normal_vec = XMLoadFloat3(&normal_at_intersection);
-					normal_vec = XMVectorRound(XMVector3Normalize(normal_vec));
-					XMStoreFloat3(&normal, normal_vec);
-					move_vec = XMLoadFloat3(&move_direction);				
-					cross = XMVector3Cross(normal_vec, move_vec);
+					if (speedMultiplier * controlledspeed < 3)
+					{
 
-					float normal_rot_angle=0.0;
-					if (normal.x != 0 && normal.y == 0 && normal.z == 0)
-						if (normal.x < 0)
+						flying = false;
+						//rotate cam, so that walking on walls
+						XMVECTOR result, cross, normal_vec, move_vec;
+						XMFLOAT3 new_move, normal;
+						normal_vec = XMLoadFloat3(&normal_at_intersection);
+						normal_vec = XMVectorRound(XMVector3Normalize(normal_vec));
+						XMStoreFloat3(&normal, normal_vec);
+						move_vec = XMLoadFloat3(&move_direction);
+						cross = XMVector3Cross(normal_vec, move_vec);
+
+						float normal_rot_angle = 0.0;
+
+						/*			if (normal.x != 0 && normal.y == 0 && normal.z == 0)
+							if (normal.x < 0)
 							normal_rot_angle = -XM_PI;
-						else
+							else
 							normal_rot_angle = XM_PIDIV2;
-					else if (normal.x == 0 && normal.y != 0 && normal.z == 0)
-						normal_rot_angle = XM_PIDIV2;
-					else if (normal.x == 0 && normal.y == 0 && normal.z != 0)
-					if (normal.z < 0)
-						normal_rot_angle = XM_PI;
+							else if (normal.x == 0 && normal.y != 0 && normal.z == 0)
+							normal_rot_angle = XM_PIDIV2;
+							else if (normal.x == 0 && normal.y == 0 && normal.z != 0)
+							if (normal.z < 0)
+							normal_rot_angle = XM_PI;
+							else
+							normal_rot_angle = 0.0;*/
+
+						result = XMVector3TransformCoord(cross, XMMatrixRotationAxis(normal_vec, normal_rot_angle));
+						XMStoreFloat3(&new_move, result);
+
+						rotation.x = atan(new_move.y / new_move.z);
+						rotation.y = atan(new_move.x / new_move.z);
+
+
+						if (normal.x != 0 && normal.y == 0 && normal.z == 0)
+						{
+							if (normal.x > 0)
+							{
+								rotation.z = -XM_PIDIV2;
+							}
+							else
+							{
+							}
+						}
+						else if (normal.x == 0 && normal.y != 0 && normal.z == 0)
+						{
+							if (normal.y > 0)
+							{
+
+							}
+							else
+							{
+								rotation.z = XM_PI;
+							}
+						}
+						else if (normal.x == 0 && normal.y == 0 && normal.z != 1)
+						{
+							if (normal.z > 0)
+							{
+
+							}
+							else
+							{
+							}
+						}
+					}
 					else
-						normal_rot_angle = 0.0;
-
-					result = XMVector3TransformCoord(cross, XMMatrixRotationAxis(normal_vec, normal_rot_angle));
-  					XMStoreFloat3(&new_move, result);
-
-					rotation.x = atan(new_move.y / new_move.z);
-					rotation.y = atan(new_move.x / new_move.z);
-					
-					if (normal_at_intersection.y < 0)
-						rotation.z = XM_PI;
-					//else if (normal_at_intersection.z < 0)
-					//	rotation.y -= XM_PIDIV2;
-					//else if (normal_at_intersection.z > 0)
-					//	rotation.y += XM_PIDIV2;
-					
-
+					{
+						hit = true;
+					}
 
 				}
-
+				else
+				{
+					hit = true;
+				}
 				return true;
 			}
 		}

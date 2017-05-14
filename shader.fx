@@ -114,6 +114,13 @@ float4 PS( PS_INPUT input) : SV_Target
 	float spec = saturate(dot(refl, d));
 	spec = pow(spec, 5);
 	color.rgb += spec;
+	
+	if (info.r)
+	{
+		color.r += (input.Pos.y + 700) / 1700;
+		color.g += (input.Pos.x  ) / 8000;
+		color.b += (input.Pos.x ) / 8000;
+	}
 	// color.a = 1;
 
 	return color;
@@ -169,8 +176,8 @@ static const float BlurWeights[9] =
 float4 PS_screen(PS_INPUT input) : SV_Target
 {
 	//return float4(1,0,0,1);
-	float4 texx = txDiffuse.SampleLevel(samLinear, input.Tex , 0);
-	return float4(texx.rgb, 1);
+	//float4 texx = txDiffuse.SampleLevel(samLinear, input.Tex , 0);
+	//return float4(texx.rgb, 1);
 
 	//float4 bloom = float4(0,0,0,0);
 	//float span = 7;
@@ -189,45 +196,45 @@ float4 PS_screen(PS_INPUT input) : SV_Target
 	//return result;
 	//
 
-	//	float4 glow = txDiffuse.SampleLevel(samLinear, input.Tex,5);
+	float4 glow = txDiffuse.SampleLevel(samLinear, input.Tex,5);
 
-	//float4 glowsum = float4(0, 0, 0, 0);
-	//float t = 0.002 * 2;
-	//for (int xx = -10; xx < 10; xx++)
-	//	for (int yy = -10; yy < 10; yy++)
-	//	{
-	//		float g = txDiffuse.SampleLevel(samLinear, input.Tex + float2(t*xx,t*yy), 1).r;
+	float4 glowsum = float4(0, 0, 0, 0);
+	float t = 0.002 * 2;
+	for (int xx = -10; xx < 10; xx++)
+		for (int yy = -10; yy < 10; yy++)
+		{
+			float g = txDiffuse.SampleLevel(samLinear, input.Tex + float2(t*xx,t*yy), 1).r;
 
-	//		g = saturate(g - 0.5)*0.4;
-	//		//float distance = sqrt(xx*xx + yy*yy);
-	//		float distance = xx*xx + yy*yy;
-	//		g = g *(196 - distance) / 196.;
-	//		g = pow(g, 4) * 25;
-	//		glowsum += g;
+			g = saturate(g - 0.5)*0.4;
+			//float distance = sqrt(xx*xx + yy*yy);
+			float distance = xx*xx + yy*yy;
+			g = g *(196 - distance) / 196.;
+			g = pow(g, 4) * 25;
+			glowsum += g;
 
-	//	}
-	//glowsum.a = 1;
-	//glowsum = saturate(glowsum);
-	////return glowsum;
-	//float4 tex = txDiffuse.SampleLevel(samLinear, input.Tex, 0);
+		}
+	glowsum.a = 1;
+	glowsum = saturate(glowsum);
+	//return glowsum;
+	float4 tex = txDiffuse.SampleLevel(samLinear, input.Tex, 0);
 
 
-	//float2 coord = input.Tex - float2(0.5, 0.5);
-	//coord *= 2.0;
-	//float dist = length(coord);
+	float2 coord = input.Tex - float2(0.5, 0.5);
+	coord *= 2.0;
+	float dist = length(coord);
 
-	//
-	//tex += glowsum / 2;
-	//
-	//float3 bwcolor = tex.rgb;
+	
+	tex += glowsum / 2;
+	
+	float3 bwcolor = tex.rgb;
 
-	//float aver = (bwcolor.r + bwcolor.g + bwcolor.b) / 3.0;
-	//bwcolor.r = aver;
-	//bwcolor.g = aver;
-	//bwcolor.b = aver;
-	//dist = pow(dist, 2);
-	//float3 result = bwcolor * dist + tex.rgb * (1.0 - dist);
-	//return float4(result, 1);
+	float aver = (bwcolor.r + bwcolor.g + bwcolor.b) / 3.0;
+	bwcolor.r = aver;
+	bwcolor.g = aver;
+	bwcolor.b = aver;
+	dist = pow(dist, 2);
+	float3 result = bwcolor * dist + tex.rgb * (1.0 - dist);
+	return float4(result, 1);
 
 	//tex.a = 1;
 	//return tex;

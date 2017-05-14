@@ -593,7 +593,7 @@ HRESULT InitDevice()
 	constantbuffer.View = XMMatrixTranspose(g_View);
 	constantbuffer.Projection = XMMatrixTranspose(g_Projection);
 	constantbuffer.World = XMMatrixTranspose(XMMatrixIdentity());
-	constantbuffer.info = XMFLOAT4(1, 1, 1, 1);
+	constantbuffer.info = XMFLOAT4(0, 1, 1, 1);
 	g_pImmediateContext->UpdateSubresource(g_pCBuffer, 0, NULL, &constantbuffer, 0, 0);
 
 	//blendstate:
@@ -1252,6 +1252,7 @@ void Render_to_texture(long elapsed)
 	constantbuffer.LightView = XMMatrixTranspose(g_Light);
 	constantbuffer.View = XMMatrixTranspose(view);
 	constantbuffer.Projection = XMMatrixTranspose(g_Projection);
+	constantbuffer.info = XMFLOAT4(cam.hit, 0, 0, 0);
 	//constantbuffer.CameraPos = XMFLOAT4(cam.position.x, cam.position.y, cam.position.z, 1);
 
 	XMMATRIX T, R, M, S;

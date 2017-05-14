@@ -88,7 +88,7 @@ bool								update_boundaries = true;
 bool closeEnough = false;
 int collected = 0;
 bool useBoost = false;
-int speedMultiplier = 1;
+//int speedMultiplier = 1;
 
 Font font;
 
@@ -776,8 +776,17 @@ void OnMM(HWND hwnd, int x, int y, UINT keyFlags)
 	int diffy = holdy - y;
 	float angle_y = (float)diffx / 300.0;
 	float angle_x = (float)diffy / 300.0;
-	cam.rotation.y += angle_y;
-	cam.rotation.x += angle_x;
+	
+	if (cam.flying)
+	{
+		cam.rotation.y += angle_y;
+		cam.rotation.x += angle_x;
+	}
+	else
+	{
+		cam.rotation.y += angle_y;
+
+	}
 
 	int midx = (rc.left + rc.right) / 2;
 	int midy = (rc.top + rc.bottom) / 2;
@@ -841,6 +850,7 @@ void OnKeyDown(HWND hwnd, UINT vk, BOOL fDown, int cRepeat, UINT flags)
 	{
 	default:break;
 	case 81://q
+		//cam.rotation.z += XM_PI;
 		cam.q = 1; break;
 	case 69://e
 		cam.e = 1; break;
@@ -852,7 +862,10 @@ void OnKeyDown(HWND hwnd, UINT vk, BOOL fDown, int cRepeat, UINT flags)
 		closeEnough = true;
 		break;
 	case 32: //space
-		useBoost = true;
+		if (cam.flying)
+			useBoost = true;
+		else
+			cam.flying = true;
 		break;
 	case 87: cam.w = 1; //w
 		break;
@@ -1195,7 +1208,7 @@ void Render_to_texture(long elapsed)
 
 	//render_objects(view, elapsed);
 
-	cam.controlledspeed = speedMultiplier;
+	//cam.controlledspeed = speedMultiplier;
 	if (collected == 3) {
 		PostQuitMessage(0);
 	}
@@ -1459,15 +1472,15 @@ void Render_to_texture(long elapsed)
 	if (useBoost == true) {
 		if (count1 % 100 == 0 && test2.length() > 0) {
 			test2 = test2.substr(0, test2.length() - 1);
-			speedMultiplier = 7;
+			cam.speedMultiplier = 7;
 			count1 = 0;
 		}
 		else if (test2.length() == 0) {
-			speedMultiplier = 1;
+			cam.speedMultiplier = 1;
 		}
 	}
 	else if (useBoost == false && test2.length() < 10) {//add some back
-		speedMultiplier = 1;
+		cam.speedMultiplier = 1;
 		if (count1 % 100 == 0) {
 			test2.append("|");
 		}
@@ -1507,7 +1520,7 @@ void Render_to_shadowmap(long elapsed)
 
 	//render_objects(view, elapsed);
 
-	cam.controlledspeed = speedMultiplier;
+	
 	if (collected == 3) {
 		PostQuitMessage(0);
 	}
@@ -1684,15 +1697,15 @@ void Render_to_shadowmap(long elapsed)
 	if (useBoost == true) {
 		if (count1 % 100 == 0 && test2.length() > 0) {
 			test2 = test2.substr(0, test2.length() - 1);
-			speedMultiplier = 7;
+			cam.speedMultiplier = 7;
 			count1 = 0;
 		}
 		else if (test2.length() == 0) {
-			speedMultiplier = 1;
+			cam.speedMultiplier = 1;
 		}
 	}
 	else if (useBoost == false && test2.length() < 10) {//add some back
-		speedMultiplier = 1;
+		cam.speedMultiplier = 1;
 		if (count1 % 100 == 0) {
 			test2.append("|");
 		}
@@ -1778,7 +1791,7 @@ void Render()
 
 	cam.animation(elapsed);
 
-	Render_to_shadowmap(elapsed);
+	//Render_to_shadowmap(elapsed);
 	Render_to_texture(elapsed);
 	Render_to_screen(elapsed);
 }

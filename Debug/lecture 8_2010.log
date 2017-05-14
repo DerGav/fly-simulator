@@ -1,9 +1,402 @@
-﻿Build started 5/11/2017 4:22:33 PM.
+﻿Build started 5/13/2017 11:18:32 PM.
      1>Project "C:\Users\Administrator\Desktop\fly-simulator\lecture 8_2010.vcxproj" on node 2 (Build target(s)).
-     1>Link:
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IDXUT\Core /IDXUT\Optional /ZI /nologo /W4 /WX- /Od /Oi /Oy- /D WIN32 /D _DEBUG /D DEBUG /D PROFILE /D _WINDOWS /D D3DXFX_LARGEADDRESS_HANDLE /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /arch:SSE2 /fp:fast /Zc:wchar_t /Zc:forScope /openmp- /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt  groundwork.cpp homework4.cpp load3ds.cpp render_to_texture.cpp
+         groundwork.cpp
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(12): warning C4005: 'DXGI_STATUS_OCCLUDED' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50002) : see previous definition of 'DXGI_STATUS_OCCLUDED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(13): warning C4005: 'DXGI_STATUS_CLIPPED' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50011) : see previous definition of 'DXGI_STATUS_CLIPPED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(14): warning C4005: 'DXGI_STATUS_NO_REDIRECTION' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50020) : see previous definition of 'DXGI_STATUS_NO_REDIRECTION'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(15): warning C4005: 'DXGI_STATUS_NO_DESKTOP_ACCESS' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50029) : see previous definition of 'DXGI_STATUS_NO_DESKTOP_ACCESS'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(16): warning C4005: 'DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50038) : see previous definition of 'DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(17): warning C4005: 'DXGI_STATUS_MODE_CHANGED' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50047) : see previous definition of 'DXGI_STATUS_MODE_CHANGED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(18): warning C4005: 'DXGI_STATUS_MODE_CHANGE_IN_PROGRESS' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50056) : see previous definition of 'DXGI_STATUS_MODE_CHANGE_IN_PROGRESS'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(21): warning C4005: 'DXGI_ERROR_INVALID_CALL' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50071) : see previous definition of 'DXGI_ERROR_INVALID_CALL'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(22): warning C4005: 'DXGI_ERROR_NOT_FOUND' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50080) : see previous definition of 'DXGI_ERROR_NOT_FOUND'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(23): warning C4005: 'DXGI_ERROR_MORE_DATA' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50089) : see previous definition of 'DXGI_ERROR_MORE_DATA'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(24): warning C4005: 'DXGI_ERROR_UNSUPPORTED' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50098) : see previous definition of 'DXGI_ERROR_UNSUPPORTED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(25): warning C4005: 'DXGI_ERROR_DEVICE_REMOVED' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50107) : see previous definition of 'DXGI_ERROR_DEVICE_REMOVED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(26): warning C4005: 'DXGI_ERROR_DEVICE_HUNG' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50116) : see previous definition of 'DXGI_ERROR_DEVICE_HUNG'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(27): warning C4005: 'DXGI_ERROR_DEVICE_RESET' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50126) : see previous definition of 'DXGI_ERROR_DEVICE_RESET'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(28): warning C4005: 'DXGI_ERROR_WAS_STILL_DRAWING' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50135) : see previous definition of 'DXGI_ERROR_WAS_STILL_DRAWING'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(29): warning C4005: 'DXGI_ERROR_FRAME_STATISTICS_DISJOINT' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50145) : see previous definition of 'DXGI_ERROR_FRAME_STATISTICS_DISJOINT'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(30): warning C4005: 'DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50154) : see previous definition of 'DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(31): warning C4005: 'DXGI_ERROR_DRIVER_INTERNAL_ERROR' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50164) : see previous definition of 'DXGI_ERROR_DRIVER_INTERNAL_ERROR'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(32): warning C4005: 'DXGI_ERROR_NONEXCLUSIVE' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50173) : see previous definition of 'DXGI_ERROR_NONEXCLUSIVE'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(33): warning C4005: 'DXGI_ERROR_NOT_CURRENTLY_AVAILABLE' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50182) : see previous definition of 'DXGI_ERROR_NOT_CURRENTLY_AVAILABLE'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(34): warning C4005: 'DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50192) : see previous definition of 'DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(35): warning C4005: 'DXGI_ERROR_REMOTE_OUTOFMEMORY' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50201) : see previous definition of 'DXGI_ERROR_REMOTE_OUTOFMEMORY'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d11.h(917): warning C4005: 'D3D11_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50379) : see previous definition of 'D3D11_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d11.h(918): warning C4005: 'D3D11_ERROR_FILE_NOT_FOUND' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50388) : see previous definition of 'D3D11_ERROR_FILE_NOT_FOUND'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d11.h(919): warning C4005: 'D3D11_ERROR_TOO_MANY_UNIQUE_VIEW_OBJECTS' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50398) : see previous definition of 'D3D11_ERROR_TOO_MANY_UNIQUE_VIEW_OBJECTS'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d11.h(920): warning C4005: 'D3D11_ERROR_DEFERRED_CONTEXT_MAP_WITHOUT_INITIAL_DISCARD' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50407) : see previous definition of 'D3D11_ERROR_DEFERRED_CONTEXT_MAP_WITHOUT_INITIAL_DISCARD'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d10.h(608): warning C4005: 'D3D10_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50355) : see previous definition of 'D3D10_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d10.h(609): warning C4005: 'D3D10_ERROR_FILE_NOT_FOUND' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50364) : see previous definition of 'D3D10_ERROR_FILE_NOT_FOUND'
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(164): warning C4552: '/' : operator has no effect; expected operator with side-effect
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(198): warning C4100: 'ViewMatrix' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(341): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(343): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(345): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(347): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(352): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(357): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(390): warning C4018: '>=' : signed/unsigned mismatch
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(395): warning C4018: '>=' : signed/unsigned mismatch
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(415): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(419): warning C4018: '>=' : signed/unsigned mismatch
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(465): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(619): warning C4244: '=' : conversion from 'double' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(620): warning C4244: '=' : conversion from 'double' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(621): warning C4244: '=' : conversion from 'double' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(99): warning C4100: 'camPos' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(139): warning C4100: 'camPos' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(152): warning C4100: 'scale_factor' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(207): warning C4244: '=' : conversion from 'double' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(208): warning C4244: '=' : conversion from 'double' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(209): warning C4244: '=' : conversion from 'double' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(213): warning C4100: 'pos' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(221): warning C4101: 'd' : unreferenced local variable
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(233): warning C4100: 'scale_factor' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(254): warning C4238: nonstandard extension used : class rvalue used as lvalue
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(263): warning C4238: nonstandard extension used : class rvalue used as lvalue
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(264): warning C4238: nonstandard extension used : class rvalue used as lvalue
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(272): warning C4238: nonstandard extension used : class rvalue used as lvalue
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(274): warning C4238: nonstandard extension used : class rvalue used as lvalue
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(299): warning C4238: nonstandard extension used : class rvalue used as lvalue
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.cpp(273): warning C4189: 'dir_len' : local variable is initialized but not referenced
+         homework4.cpp
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(12): warning C4005: 'DXGI_STATUS_OCCLUDED' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50002) : see previous definition of 'DXGI_STATUS_OCCLUDED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(13): warning C4005: 'DXGI_STATUS_CLIPPED' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50011) : see previous definition of 'DXGI_STATUS_CLIPPED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(14): warning C4005: 'DXGI_STATUS_NO_REDIRECTION' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50020) : see previous definition of 'DXGI_STATUS_NO_REDIRECTION'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(15): warning C4005: 'DXGI_STATUS_NO_DESKTOP_ACCESS' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50029) : see previous definition of 'DXGI_STATUS_NO_DESKTOP_ACCESS'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(16): warning C4005: 'DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50038) : see previous definition of 'DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(17): warning C4005: 'DXGI_STATUS_MODE_CHANGED' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50047) : see previous definition of 'DXGI_STATUS_MODE_CHANGED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(18): warning C4005: 'DXGI_STATUS_MODE_CHANGE_IN_PROGRESS' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50056) : see previous definition of 'DXGI_STATUS_MODE_CHANGE_IN_PROGRESS'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(21): warning C4005: 'DXGI_ERROR_INVALID_CALL' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50071) : see previous definition of 'DXGI_ERROR_INVALID_CALL'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(22): warning C4005: 'DXGI_ERROR_NOT_FOUND' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50080) : see previous definition of 'DXGI_ERROR_NOT_FOUND'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(23): warning C4005: 'DXGI_ERROR_MORE_DATA' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50089) : see previous definition of 'DXGI_ERROR_MORE_DATA'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(24): warning C4005: 'DXGI_ERROR_UNSUPPORTED' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50098) : see previous definition of 'DXGI_ERROR_UNSUPPORTED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(25): warning C4005: 'DXGI_ERROR_DEVICE_REMOVED' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50107) : see previous definition of 'DXGI_ERROR_DEVICE_REMOVED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(26): warning C4005: 'DXGI_ERROR_DEVICE_HUNG' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50116) : see previous definition of 'DXGI_ERROR_DEVICE_HUNG'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(27): warning C4005: 'DXGI_ERROR_DEVICE_RESET' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50126) : see previous definition of 'DXGI_ERROR_DEVICE_RESET'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(28): warning C4005: 'DXGI_ERROR_WAS_STILL_DRAWING' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50135) : see previous definition of 'DXGI_ERROR_WAS_STILL_DRAWING'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(29): warning C4005: 'DXGI_ERROR_FRAME_STATISTICS_DISJOINT' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50145) : see previous definition of 'DXGI_ERROR_FRAME_STATISTICS_DISJOINT'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(30): warning C4005: 'DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50154) : see previous definition of 'DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(31): warning C4005: 'DXGI_ERROR_DRIVER_INTERNAL_ERROR' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50164) : see previous definition of 'DXGI_ERROR_DRIVER_INTERNAL_ERROR'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(32): warning C4005: 'DXGI_ERROR_NONEXCLUSIVE' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50173) : see previous definition of 'DXGI_ERROR_NONEXCLUSIVE'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(33): warning C4005: 'DXGI_ERROR_NOT_CURRENTLY_AVAILABLE' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50182) : see previous definition of 'DXGI_ERROR_NOT_CURRENTLY_AVAILABLE'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(34): warning C4005: 'DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50192) : see previous definition of 'DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(35): warning C4005: 'DXGI_ERROR_REMOTE_OUTOFMEMORY' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50201) : see previous definition of 'DXGI_ERROR_REMOTE_OUTOFMEMORY'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d11.h(917): warning C4005: 'D3D11_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50379) : see previous definition of 'D3D11_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d11.h(918): warning C4005: 'D3D11_ERROR_FILE_NOT_FOUND' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50388) : see previous definition of 'D3D11_ERROR_FILE_NOT_FOUND'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d11.h(919): warning C4005: 'D3D11_ERROR_TOO_MANY_UNIQUE_VIEW_OBJECTS' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50398) : see previous definition of 'D3D11_ERROR_TOO_MANY_UNIQUE_VIEW_OBJECTS'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d11.h(920): warning C4005: 'D3D11_ERROR_DEFERRED_CONTEXT_MAP_WITHOUT_INITIAL_DISCARD' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50407) : see previous definition of 'D3D11_ERROR_DEFERRED_CONTEXT_MAP_WITHOUT_INITIAL_DISCARD'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d10.h(608): warning C4005: 'D3D10_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50355) : see previous definition of 'D3D10_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d10.h(609): warning C4005: 'D3D10_ERROR_FILE_NOT_FOUND' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50364) : see previous definition of 'D3D10_ERROR_FILE_NOT_FOUND'
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(164): warning C4552: '/' : operator has no effect; expected operator with side-effect
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(198): warning C4100: 'ViewMatrix' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(341): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(343): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(345): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(347): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(352): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(357): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(390): warning C4018: '>=' : signed/unsigned mismatch
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(395): warning C4018: '>=' : signed/unsigned mismatch
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(415): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(419): warning C4018: '>=' : signed/unsigned mismatch
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(465): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(619): warning C4244: '=' : conversion from 'double' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(620): warning C4244: '=' : conversion from 'double' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(621): warning C4244: '=' : conversion from 'double' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\controller.h(106): warning C4244: '=' : conversion from 'int' to 'WORD', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\controller.h(107): warning C4244: '=' : conversion from 'int' to 'WORD', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\font.h(179): warning C4512: 'Font' : assignment operator could not be generated
+                 c:\users\administrator\desktop\fly-simulator\font.h(28) : see declaration of 'Font'
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(122): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(490): warning C4189: 'vertices' : local variable is initialized but not referenced
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(707): warning C4100: 'keyFlags' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(707): warning C4100: 'y' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(707): warning C4100: 'x' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(707): warning C4100: 'fDoubleClick' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(707): warning C4100: 'hwnd' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(715): warning C4100: 'keyFlags' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(715): warning C4100: 'y' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(715): warning C4100: 'x' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(715): warning C4100: 'fDoubleClick' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(715): warning C4100: 'hwnd' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(722): warning C4100: 'cRepeat' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(722): warning C4100: 'ch' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(722): warning C4100: 'hwnd' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(729): warning C4100: 'keyFlags' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(729): warning C4100: 'y' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(729): warning C4100: 'x' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(729): warning C4100: 'hwnd' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(737): warning C4100: 'keyFlags' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(737): warning C4100: 'y' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(737): warning C4100: 'x' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(737): warning C4100: 'hwnd' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(777): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(778): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(798): warning C4100: 'lpCreateStruct' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(813): warning C4100: 'id' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(813): warning C4100: 'hwnd' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(818): warning C4100: 'flags' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(818): warning C4100: 'cRepeat' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(818): warning C4100: 'fDown' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(818): warning C4100: 'hwnd' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(846): warning C4100: 'flags' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(846): warning C4100: 'cRepeat' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(846): warning C4100: 'fDown' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(846): warning C4100: 'hwnd' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(1196): warning C4100: 'elapsed' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(1506): warning C4100: 'elapsed' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(1734): warning C4100: 'elapsed' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(1789): warning C4244: 'initializing' : conversion from 'long double' to 'long', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(1792): warning C4244: 'argument' : conversion from 'long' to 'float', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\homework4.cpp(1800): warning C4100: 'x' : unreferenced formal parameter
+         load3ds.cpp
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(12): warning C4005: 'DXGI_STATUS_OCCLUDED' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50002) : see previous definition of 'DXGI_STATUS_OCCLUDED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(13): warning C4005: 'DXGI_STATUS_CLIPPED' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50011) : see previous definition of 'DXGI_STATUS_CLIPPED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(14): warning C4005: 'DXGI_STATUS_NO_REDIRECTION' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50020) : see previous definition of 'DXGI_STATUS_NO_REDIRECTION'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(15): warning C4005: 'DXGI_STATUS_NO_DESKTOP_ACCESS' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50029) : see previous definition of 'DXGI_STATUS_NO_DESKTOP_ACCESS'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(16): warning C4005: 'DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50038) : see previous definition of 'DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(17): warning C4005: 'DXGI_STATUS_MODE_CHANGED' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50047) : see previous definition of 'DXGI_STATUS_MODE_CHANGED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(18): warning C4005: 'DXGI_STATUS_MODE_CHANGE_IN_PROGRESS' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50056) : see previous definition of 'DXGI_STATUS_MODE_CHANGE_IN_PROGRESS'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(21): warning C4005: 'DXGI_ERROR_INVALID_CALL' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50071) : see previous definition of 'DXGI_ERROR_INVALID_CALL'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(22): warning C4005: 'DXGI_ERROR_NOT_FOUND' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50080) : see previous definition of 'DXGI_ERROR_NOT_FOUND'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(23): warning C4005: 'DXGI_ERROR_MORE_DATA' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50089) : see previous definition of 'DXGI_ERROR_MORE_DATA'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(24): warning C4005: 'DXGI_ERROR_UNSUPPORTED' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50098) : see previous definition of 'DXGI_ERROR_UNSUPPORTED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(25): warning C4005: 'DXGI_ERROR_DEVICE_REMOVED' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50107) : see previous definition of 'DXGI_ERROR_DEVICE_REMOVED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(26): warning C4005: 'DXGI_ERROR_DEVICE_HUNG' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50116) : see previous definition of 'DXGI_ERROR_DEVICE_HUNG'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(27): warning C4005: 'DXGI_ERROR_DEVICE_RESET' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50126) : see previous definition of 'DXGI_ERROR_DEVICE_RESET'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(28): warning C4005: 'DXGI_ERROR_WAS_STILL_DRAWING' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50135) : see previous definition of 'DXGI_ERROR_WAS_STILL_DRAWING'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(29): warning C4005: 'DXGI_ERROR_FRAME_STATISTICS_DISJOINT' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50145) : see previous definition of 'DXGI_ERROR_FRAME_STATISTICS_DISJOINT'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(30): warning C4005: 'DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50154) : see previous definition of 'DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(31): warning C4005: 'DXGI_ERROR_DRIVER_INTERNAL_ERROR' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50164) : see previous definition of 'DXGI_ERROR_DRIVER_INTERNAL_ERROR'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(32): warning C4005: 'DXGI_ERROR_NONEXCLUSIVE' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50173) : see previous definition of 'DXGI_ERROR_NONEXCLUSIVE'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(33): warning C4005: 'DXGI_ERROR_NOT_CURRENTLY_AVAILABLE' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50182) : see previous definition of 'DXGI_ERROR_NOT_CURRENTLY_AVAILABLE'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(34): warning C4005: 'DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50192) : see previous definition of 'DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(35): warning C4005: 'DXGI_ERROR_REMOTE_OUTOFMEMORY' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50201) : see previous definition of 'DXGI_ERROR_REMOTE_OUTOFMEMORY'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d11.h(917): warning C4005: 'D3D11_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50379) : see previous definition of 'D3D11_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d11.h(918): warning C4005: 'D3D11_ERROR_FILE_NOT_FOUND' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50388) : see previous definition of 'D3D11_ERROR_FILE_NOT_FOUND'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d11.h(919): warning C4005: 'D3D11_ERROR_TOO_MANY_UNIQUE_VIEW_OBJECTS' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50398) : see previous definition of 'D3D11_ERROR_TOO_MANY_UNIQUE_VIEW_OBJECTS'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d11.h(920): warning C4005: 'D3D11_ERROR_DEFERRED_CONTEXT_MAP_WITHOUT_INITIAL_DISCARD' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50407) : see previous definition of 'D3D11_ERROR_DEFERRED_CONTEXT_MAP_WITHOUT_INITIAL_DISCARD'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d10.h(608): warning C4005: 'D3D10_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50355) : see previous definition of 'D3D10_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d10.h(609): warning C4005: 'D3D10_ERROR_FILE_NOT_FOUND' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50364) : see previous definition of 'D3D10_ERROR_FILE_NOT_FOUND'
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(164): warning C4552: '/' : operator has no effect; expected operator with side-effect
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(198): warning C4100: 'ViewMatrix' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(341): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(343): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(345): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(347): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(352): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(357): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(390): warning C4018: '>=' : signed/unsigned mismatch
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(395): warning C4018: '>=' : signed/unsigned mismatch
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(415): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(419): warning C4018: '>=' : signed/unsigned mismatch
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(465): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(619): warning C4244: '=' : conversion from 'double' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(620): warning C4244: '=' : conversion from 'double' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(621): warning C4244: '=' : conversion from 'double' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\load3ds.cpp(38): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdio.h(211) : see declaration of 'fopen'
+     1>c:\users\administrator\desktop\fly-simulator\load3ds.cpp(53): warning C4996: 'filelength': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _filelength. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\io.h(331) : see declaration of 'filelength'
+     1>c:\users\administrator\desktop\fly-simulator\load3ds.cpp(53): warning C4996: 'fileno': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _fileno. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdio.h(718) : see declaration of 'fileno'
+     1>c:\users\administrator\desktop\fly-simulator\load3ds.cpp(95): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\users\administrator\desktop\fly-simulator\load3ds.cpp(247): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\administrator\desktop\fly-simulator\load3ds.cpp(269): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\administrator\desktop\fly-simulator\load3ds.cpp(401): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\administrator\desktop\fly-simulator\load3ds.cpp(406): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\administrator\desktop\fly-simulator\load3ds.cpp(105): warning C4189: 'z' : local variable is initialized but not referenced
+     1>c:\users\administrator\desktop\fly-simulator\load3ds.cpp(464): warning C4100: 'gourad' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\load3ds.cpp(552): warning C4101: 'i' : unreferenced local variable
+     1>c:\users\administrator\desktop\fly-simulator\load3ds.cpp(466): warning C4189: 'pVertexBuffer' : local variable is initialized but not referenced
+     1>c:\users\administrator\desktop\fly-simulator\load3ds.cpp(676): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdio.h(211) : see declaration of 'fopen'
+     1>c:\users\administrator\desktop\fly-simulator\load3ds.cpp(691): warning C4996: 'filelength': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _filelength. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\io.h(331) : see declaration of 'filelength'
+     1>c:\users\administrator\desktop\fly-simulator\load3ds.cpp(733): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\users\administrator\desktop\fly-simulator\load3ds.cpp(885): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\administrator\desktop\fly-simulator\load3ds.cpp(891): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\administrator\desktop\fly-simulator\load3ds.cpp(743): warning C4189: 'z' : local variable is initialized but not referenced
+         render_to_texture.cpp
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(12): warning C4005: 'DXGI_STATUS_OCCLUDED' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50002) : see previous definition of 'DXGI_STATUS_OCCLUDED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(13): warning C4005: 'DXGI_STATUS_CLIPPED' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50011) : see previous definition of 'DXGI_STATUS_CLIPPED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(14): warning C4005: 'DXGI_STATUS_NO_REDIRECTION' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50020) : see previous definition of 'DXGI_STATUS_NO_REDIRECTION'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(15): warning C4005: 'DXGI_STATUS_NO_DESKTOP_ACCESS' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50029) : see previous definition of 'DXGI_STATUS_NO_DESKTOP_ACCESS'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(16): warning C4005: 'DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50038) : see previous definition of 'DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(17): warning C4005: 'DXGI_STATUS_MODE_CHANGED' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50047) : see previous definition of 'DXGI_STATUS_MODE_CHANGED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(18): warning C4005: 'DXGI_STATUS_MODE_CHANGE_IN_PROGRESS' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50056) : see previous definition of 'DXGI_STATUS_MODE_CHANGE_IN_PROGRESS'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(21): warning C4005: 'DXGI_ERROR_INVALID_CALL' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50071) : see previous definition of 'DXGI_ERROR_INVALID_CALL'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(22): warning C4005: 'DXGI_ERROR_NOT_FOUND' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50080) : see previous definition of 'DXGI_ERROR_NOT_FOUND'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(23): warning C4005: 'DXGI_ERROR_MORE_DATA' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50089) : see previous definition of 'DXGI_ERROR_MORE_DATA'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(24): warning C4005: 'DXGI_ERROR_UNSUPPORTED' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50098) : see previous definition of 'DXGI_ERROR_UNSUPPORTED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(25): warning C4005: 'DXGI_ERROR_DEVICE_REMOVED' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50107) : see previous definition of 'DXGI_ERROR_DEVICE_REMOVED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(26): warning C4005: 'DXGI_ERROR_DEVICE_HUNG' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50116) : see previous definition of 'DXGI_ERROR_DEVICE_HUNG'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(27): warning C4005: 'DXGI_ERROR_DEVICE_RESET' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50126) : see previous definition of 'DXGI_ERROR_DEVICE_RESET'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(28): warning C4005: 'DXGI_ERROR_WAS_STILL_DRAWING' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50135) : see previous definition of 'DXGI_ERROR_WAS_STILL_DRAWING'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(29): warning C4005: 'DXGI_ERROR_FRAME_STATISTICS_DISJOINT' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50145) : see previous definition of 'DXGI_ERROR_FRAME_STATISTICS_DISJOINT'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(30): warning C4005: 'DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50154) : see previous definition of 'DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(31): warning C4005: 'DXGI_ERROR_DRIVER_INTERNAL_ERROR' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50164) : see previous definition of 'DXGI_ERROR_DRIVER_INTERNAL_ERROR'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(32): warning C4005: 'DXGI_ERROR_NONEXCLUSIVE' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50173) : see previous definition of 'DXGI_ERROR_NONEXCLUSIVE'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(33): warning C4005: 'DXGI_ERROR_NOT_CURRENTLY_AVAILABLE' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50182) : see previous definition of 'DXGI_ERROR_NOT_CURRENTLY_AVAILABLE'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(34): warning C4005: 'DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50192) : see previous definition of 'DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(35): warning C4005: 'DXGI_ERROR_REMOTE_OUTOFMEMORY' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50201) : see previous definition of 'DXGI_ERROR_REMOTE_OUTOFMEMORY'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d11.h(917): warning C4005: 'D3D11_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50379) : see previous definition of 'D3D11_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d11.h(918): warning C4005: 'D3D11_ERROR_FILE_NOT_FOUND' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50388) : see previous definition of 'D3D11_ERROR_FILE_NOT_FOUND'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d11.h(919): warning C4005: 'D3D11_ERROR_TOO_MANY_UNIQUE_VIEW_OBJECTS' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50398) : see previous definition of 'D3D11_ERROR_TOO_MANY_UNIQUE_VIEW_OBJECTS'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d11.h(920): warning C4005: 'D3D11_ERROR_DEFERRED_CONTEXT_MAP_WITHOUT_INITIAL_DISCARD' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50407) : see previous definition of 'D3D11_ERROR_DEFERRED_CONTEXT_MAP_WITHOUT_INITIAL_DISCARD'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d10.h(608): warning C4005: 'D3D10_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50355) : see previous definition of 'D3D10_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d10.h(609): warning C4005: 'D3D10_ERROR_FILE_NOT_FOUND' : macro redefinition
+                 c:\program files (x86)\windows kits\8.1\include\shared\winerror.h(50364) : see previous definition of 'D3D10_ERROR_FILE_NOT_FOUND'
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(164): warning C4552: '/' : operator has no effect; expected operator with side-effect
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(198): warning C4100: 'ViewMatrix' : unreferenced formal parameter
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(341): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(343): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(345): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(347): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(352): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(357): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(390): warning C4018: '>=' : signed/unsigned mismatch
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(395): warning C4018: '>=' : signed/unsigned mismatch
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(415): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(419): warning C4018: '>=' : signed/unsigned mismatch
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(465): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(619): warning C4244: '=' : conversion from 'double' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(620): warning C4244: '=' : conversion from 'double' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\groundwork.h(621): warning C4244: '=' : conversion from 'double' to 'FLOAT', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\controller.h(106): warning C4244: '=' : conversion from 'int' to 'WORD', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\controller.h(107): warning C4244: '=' : conversion from 'int' to 'WORD', possible loss of data
+     1>c:\users\administrator\desktop\fly-simulator\render_to_texture.cpp(19): warning C4101: 'renderTargetViewDesc' : unreferenced local variable
+         Generating Code...
+     1>c:\users\administrator\desktop\fly-simulator\render_to_texture.cpp(182): warning C4701: potentially uninitialized local variable 'textureWidth' used
+     1>c:\users\administrator\desktop\fly-simulator\render_to_texture.cpp(183): warning C4701: potentially uninitialized local variable 'textureHeight' used
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Administrator\Desktop\fly-simulator\Debug\homework 4.exe" /INCREMENTAL /NOLOGO d3d11.lib d3dcompiler.lib d3dx11d.lib d3dx9d.lib dxerr.lib dxguid.lib winmm.lib comctl32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /manifestinput:"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\Include\Manifest\dpiaware.manifest" /DEBUG /PDB:"C:\Users\Administrator\Desktop\fly-simulator\Debug\homework 4.pdb" /SUBSYSTEM:WINDOWS /LARGEADDRESSAWARE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Administrator\Desktop\fly-simulator\Debug\homework 4.lib" /MACHINE:X86 /SAFESEH  "Debug\homework 8.res"
+         Debug\Font.obj
+         Debug\groundwork.obj
+         Debug\homework4.obj
+         Debug\load3ds.obj
+         Debug\render_to_texture.obj
          lecture 8_2010.vcxproj -> C:\Users\Administrator\Desktop\fly-simulator\Debug\homework 4.exe
      1>Done Building Project "C:\Users\Administrator\Desktop\fly-simulator\lecture 8_2010.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.03
+Time Elapsed 00:00:03.58

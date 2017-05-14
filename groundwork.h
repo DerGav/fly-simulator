@@ -439,6 +439,7 @@ private:
 public:
 	int w, s, a, d, q, e;
 	float controlledspeed;
+	float speedMultiplier;
 	XMFLOAT3 position;
 	XMFLOAT3 rotation;
 	XMFLOAT3 move_direction;
@@ -449,47 +450,35 @@ public:
 	camera()
 	{
 		w = s = a = d = 0;
+		speedMultiplier = 1;
 		position = XMFLOAT3(30, -30, 0);
-		//position = XMFLOAT3(30, -30, -50);
 		rotation = XMFLOAT3(0, 0, 0);
 		controlledspeed = 0.8;
 		flying = true;
-		//XMFLOAT3 p0, p1, v0, v1, v2, i;
-		//p0 = XMFLOAT3(0,  1, 0);
-		//p1 = XMFLOAT3(0,  0, 0);
-		//v0 = XMFLOAT3(1,  0, 1);
-		//v1 = XMFLOAT3(-1,  0, 1);
-		//v2 = XMFLOAT3(0,  0, -1);
 
-		//if (intersect3D_RayTriangle(p0, p1, v0, v1, v2, i) == 1)
-		//	rotation.x = XM_PI;
 	}
-	//return pointer to vector
-	//vector<ObjectSphere>* getObjectSpheres()
-	//{
-	//	return &(this->objSphs);
-	//}
+
 	void animation(float elapsed_microseconds)
 	{
 		XMFLOAT3 possible_position;
 		XMFLOAT3 forward;
 		float speed = elapsed_microseconds / 100000.0;
 
-		if (flying)
-		{
-			XMMATRIX Ry, Rx, T;
+
+
+			XMMATRIX Ry, Rx, Rz, T;
 			Ry = XMMatrixRotationY(-rotation.y);
 			Rx = XMMatrixRotationX(-rotation.x);
+			Rz = XMMatrixRotationZ(-rotation.z);
 			//Rx = XMMatrixIdentity();
 			forward = XMFLOAT3(0, 0, 1);
 			XMVECTOR f = XMLoadFloat3(&forward);
 			f = XMVector3TransformCoord(f, Rx*Ry);
 			XMStoreFloat3(&forward, f);
 
-		/*	float forward_len = sqrt(forward.x*forward.x + forward.y*forward.y + forward.z*forward.z);
-			move_direction.x = forward.x / forward_len;
-			move_direction.y = forward.y / forward_len;
-			move_direction.z = forward.z / forward_len;*/
+		/*	float forward_len = sqrt(forward.x*forward.x + forward.y*forward.y + forward.z*forward.z);*/
+			move_direction = forward;
+
 
 			XMFLOAT3 side = XMFLOAT3(1, 0, 0);
 			XMVECTOR si = XMLoadFloat3(&side);
@@ -502,20 +491,33 @@ public:
 
 			possible_position = position;
 
-			possible_position.x -= forward.x * speed * controlledspeed;
-			possible_position.y -= forward.y * speed * controlledspeed;
-			possible_position.z -= forward.z * speed * controlledspeed;
+		if (flying)
+		{
+			if (w)
+			{
+				if (controlledspeed < 3)
+					controlledspeed += 0.5;
+			}
+			if (s)
+			{
+				if (controlledspeed > 0.5)
+					controlledspeed -= 0.5;
+				else
+					controlledspeed = 0.5;
+			}
+			possible_position.x -= forward.x * speed * controlledspeed * speedMultiplier;
+			possible_position.y -= forward.y * speed * controlledspeed * speedMultiplier;
+			possible_position.z -= forward.z * speed * controlledspeed * speedMultiplier;
 		}
 		else
 		{
-			possible_position = position;
 		/*	rotation.y = atan(move_direction.z / move_direction.x); 
 			rotation.x = atan(move_direction.y / move_direction.z);*/
 			if (w)
 			{
-				possible_position.x -= move_direction.x * speed;
-				possible_position.y -= move_direction.y * speed;
-				possible_position.z -= move_direction.z * speed;
+				possible_position.x -= forward.x * speed;
+				possible_position.y -= forward.y * speed;
+				possible_position.z -= forward.z * speed;
 			}
 		}
 		
@@ -534,11 +536,12 @@ public:
 	}
 	XMMATRIX get_matrix(XMMATRIX *view)
 	{
-		XMMATRIX Rx, Ry, T;
+		XMMATRIX Rx, Ry, Rz, T;
 		Rx = XMMatrixRotationX(rotation.x);
 		Ry = XMMatrixRotationY(rotation.y);
+		Rz = XMMatrixRotationZ(rotation.z);
 		T = XMMatrixTranslation(position.x, position.y, position.z);
-		return T*(*view)*Ry*Rx;
+		return T*(*view)*Ry*Rx*Rz;
 	}
 	bool check_collision(XMFLOAT3 possible_position)
 	{
@@ -553,13 +556,43 @@ public:
 				{
 					flying = false;
 					//rotate cam, so that walking on walls
-					XMVECTOR result, normal, move_vec;
-					XMFLOAT3 new_move;
-					normal = XMLoadFloat3(&normal_at_intersection);
-					move_vec = XMLoadFloat3(&move_direction);
-					result = XMVector3Cross(normal, move_vec);
-					XMStoreFloat3(&new_move, move_vec);
-					//move_direction = new_move;
+					XMVECTOR result,cross, normal_vec, move_vec;
+					XMFLOAT3 new_move, normal;
+					normal_vec = XMLoadFloat3(&normal_at_intersection);
+					normal_vec = XMVectorRound(XMVector3Normalize(normal_vec));
+					XMStoreFloat3(&normal, normal_vec);
+					move_vec = XMLoadFloat3(&move_direction);				
+					cross = XMVector3Cross(normal_vec, move_vec);
+
+					float normal_rot_angle=0.0;
+					if (normal.x != 0 && normal.y == 0 && normal.z == 0)
+						if (normal.x < 0)
+							normal_rot_angle = -XM_PI;
+						else
+							normal_rot_angle = XM_PIDIV2;
+					else if (normal.x == 0 && normal.y != 0 && normal.z == 0)
+						normal_rot_angle = XM_PIDIV2;
+					else if (normal.x == 0 && normal.y == 0 && normal.z != 0)
+					if (normal.z < 0)
+						normal_rot_angle = XM_PI;
+					else
+						normal_rot_angle = 0.0;
+
+					result = XMVector3TransformCoord(cross, XMMatrixRotationAxis(normal_vec, normal_rot_angle));
+  					XMStoreFloat3(&new_move, result);
+
+					rotation.x = atan(new_move.y / new_move.z);
+					rotation.y = atan(new_move.x / new_move.z);
+					
+					if (normal_at_intersection.y < 0)
+						rotation.z = XM_PI;
+					//else if (normal_at_intersection.z < 0)
+					//	rotation.y -= XM_PIDIV2;
+					//else if (normal_at_intersection.z > 0)
+					//	rotation.y += XM_PIDIV2;
+					
+
+
 				}
 
 				return true;

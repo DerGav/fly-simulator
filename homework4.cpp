@@ -93,6 +93,7 @@ bool first_loop = true;
 bool closeEnough = false;
 int collected = 0;
 bool useBoost = false;
+bool first_pass_boost = true;
 //int speedMultiplier = 1;
 Font font;
 
@@ -874,7 +875,7 @@ void OnKeyDown(HWND hwnd, UINT vk, BOOL fDown, int cRepeat, UINT flags)
 			useBoost = true;
 		else
 		{
-			music.play(track1);
+			music.fade_in_and_play(track1,100);
 			cam.flying = true;
 			cam.position = cam.position - cam.normal *XMFLOAT3(15, 15, 15);
 		}
@@ -1424,6 +1425,11 @@ void Render_to_texture(long elapsed)
 	string test = ss.str();
 
 	if (useBoost == true) {
+		if (first_pass_boost)
+		{
+			music.play_fx("sounds/fly_wind_fast_fx.mp3");
+			first_pass_boost = false;
+		}
 		if (count1 % 100 == 0 && test2.length() > 0) {
 			test2 = test2.substr(0, test2.length() - 1);
 			cam.speedMultiplier = 7;
@@ -1431,6 +1437,7 @@ void Render_to_texture(long elapsed)
 		}
 		else if (test2.length() == 0) {
 			cam.speedMultiplier = 1;
+			
 		}
 	}
 	else if (useBoost == false && test2.length() < 10) {//add some back
@@ -1438,7 +1445,7 @@ void Render_to_texture(long elapsed)
 		if (count1 % 100 == 0) {
 			test2.append("|");
 		}
-
+		first_pass_boost = true;
 	}
 	count1++;
 	ss2 << count1;
@@ -1460,7 +1467,7 @@ void Render_to_texture(long elapsed)
 	{
 		if (collision_flag)
 		{
-			music.play_fx("sounds/thud.mp3");
+			music.play_fx("sounds/fly_wind_dying_fx.mp3");
 			collision_flag = false;
 		}
 		//music.fade_out(1,10);

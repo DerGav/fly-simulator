@@ -72,9 +72,6 @@ PS_INPUT VS_screen(VS_INPUT input)
 	output.Norm.xyz = input.Norm;
 	output.Norm.w = 1;
 
-
-
-
 	return output;
 }
 //--------------------------------------------------------------------------------------

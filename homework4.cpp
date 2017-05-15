@@ -54,6 +54,11 @@ ID3D11BlendState*					g_BlendState;
 
 ID3D11Buffer*                       g_pCBuffer = NULL;
 ID3D11ShaderResourceView*			g_pTextureSky;
+
+ID3D11ShaderResourceView*			redTex;
+ID3D11ShaderResourceView*			greenTex;
+ID3D11ShaderResourceView*			blueTex;
+
 ID3D11ShaderResourceView*			g_pTextureGrape;
 ID3D11ShaderResourceView*			g_pTextureTest;
 
@@ -83,6 +88,11 @@ ID3D11ShaderResourceView*			g_pTextureScore;
 Model								table;
 Model								centerTable;
 Model								House;
+Model								test;
+Model								sofa;
+Model								sideboard;
+Model								kitchen;
+
 bool								update_boundaries = true;
 bool								collision_flag = true;
 music_ music;
@@ -93,7 +103,6 @@ bool first_loop = true;
 bool closeEnough = false;
 int collected = 0;
 bool useBoost = false;
-bool first_pass_boost = true;
 //int speedMultiplier = 1;
 Font font;
 
@@ -106,7 +115,6 @@ HRESULT InitDevice();
 void CleanupDevice();
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 void Render();
-void changeModels(Model x[]);
 //--------------------------------------------------------------------------------------
 // Entry point to the program. Initializes everything and goes into a message processing 
 // loop. Idle time is used to render the scene.
@@ -473,7 +481,6 @@ HRESULT InitDevice()
 	if (FAILED(hr))
 		return FALSE;
 
-
 	//D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
 
@@ -481,16 +488,19 @@ HRESULT InitDevice()
 	//Load skysphere
 	LoadCatmullClark(L"ccsphere.cmp", g_pd3dDevice, &g_pVertexBuffer_sky, &model_vertex_sky);
 
-	// load 3ds models
-	//Load3DS("house.3ds", g_pd3dDevice,&House.vertex_buffer,&House.vertex_count);
 	House.load_Model("house.3ds", g_pd3dDevice, COORD, FALSE);
-
+	sideboard.load_Model("test/sideboard.3ds", g_pd3dDevice, COORD, FALSE);
+	//test.load_Model("test/Kitchen.3ds", g_pd3dDevice, COORD, FALSE);
+	kitchen.load_Model("test/Kitchen.3ds", g_pd3dDevice, COORD, FALSE);
+	sofa.load_Model("test/sofa.3ds", g_pd3dDevice, COORD, FALSE);
 	table.load_Model("simpleTable.3ds", g_pd3dDevice, COORD, FALSE); // file name, g_p3dDevice, type of collision detection, gourad shading
 	centerTable.load_Model("centerTable/centerTable.3ds", g_pd3dDevice, BOX, FALSE);
 	
-	models.push_back(table);
-	//models.push_back(centerTable);
+	models.push_back(table); //0 
 	models.push_back(House);
+	models.push_back(sideboard); //2
+	models.push_back(kitchen);
+	models.push_back(sofa); //4
 	cam.models = &models;
 	// Set vertex buffer
 	SimpleVertex vertices[] =
@@ -531,21 +541,37 @@ HRESULT InitDevice()
 	hr = D3DX11CreateShaderResourceViewFromFile(g_pd3dDevice, L"greenGrape.jpg", NULL, NULL, &g_pTextureGrape, NULL);
 	if (FAILED(hr))
 		return hr;
+	hr = D3DX11CreateShaderResourceViewFromFile(g_pd3dDevice, L"test/kitchenTex.jpg", NULL, NULL, &test.g_pTexture, NULL);
+	if (FAILED(hr))
+		return hr;
+	hr = D3DX11CreateShaderResourceViewFromFile(g_pd3dDevice, L"test/kitchenTex.jpg", NULL, NULL, &kitchen.g_pTexture, NULL);
+	if (FAILED(hr))
+		return hr;
+	hr = D3DX11CreateShaderResourceViewFromFile(g_pd3dDevice, L"test/blackL.jpg", NULL, NULL, &sofa.g_pTexture, NULL);
+	if (FAILED(hr))
+		return hr;
+	hr = D3DX11CreateShaderResourceViewFromFile(g_pd3dDevice, L"test/red.jpg", NULL, NULL, &redTex, NULL);
+	if (FAILED(hr))
+		return hr;
+	hr = D3DX11CreateShaderResourceViewFromFile(g_pd3dDevice, L"test/green.jpg", NULL, NULL, &greenTex, NULL);
+	if (FAILED(hr))
+		return hr;
+	hr = D3DX11CreateShaderResourceViewFromFile(g_pd3dDevice, L"test/blue.png", NULL, NULL, &blueTex, NULL);
+	if (FAILED(hr))
+		return hr;
+	hr = D3DX11CreateShaderResourceViewFromFile(g_pd3dDevice, L"test/blackW.jpg", NULL, NULL, &sideboard.g_pTexture, NULL);
+	if (FAILED(hr))
+		return hr;
 	hr = D3DX11CreateShaderResourceViewFromFile(g_pd3dDevice, L"old-wood-texture.jpg", NULL, NULL, &House.g_pTexture, NULL);
 	if (FAILED(hr))
 		return hr;
 	hr = D3DX11CreateShaderResourceViewFromFile(g_pd3dDevice, L"dayBox.png", NULL, NULL, &g_pTextureSky, NULL);
 	if (FAILED(hr))
 		return hr;
-	/*hr = D3DX11CreateShaderResourceViewFromFile(g_pd3dDevice, L"brownTex.jpg", NULL, NULL, &models[1].texture, NULL);
-	if (FAILED(hr))
-		return hr;*/
 	hr = D3DX11CreateShaderResourceViewFromFile(g_pd3dDevice, L"centerTable/centerTableTex.jpg", NULL, NULL, &table.g_pTexture, NULL);
 	if (FAILED(hr))
 		return hr;
-	/*hr = D3DX11CreateShaderResourceViewFromFile(g_pd3dDevice, L"ikeaFrame/Frame.png", NULL, NULL, &models[3].texture, NULL);
-	if (FAILED(hr))
-		return hr;*/
+
 
 	// Create the sample state
 	D3D11_SAMPLER_DESC sampDesc;
@@ -647,13 +673,6 @@ HRESULT InitDevice()
 	DS_OFF.DepthEnable = false;
 	g_pd3dDevice->CreateDepthStencilState(&DS_ON, &ds_on);
 	g_pd3dDevice->CreateDepthStencilState(&DS_OFF, &ds_off);
-
-	level1.init("level.bmp");
-	level1.init_texture(g_pd3dDevice, L"wall1.jpg");
-	level1.init_texture(g_pd3dDevice, L"wall2.jpg");
-	level1.init_texture(g_pd3dDevice, L"floor.jpg");
-	level1.init_texture(g_pd3dDevice, L"ceiling.jpg");
-
 
 
 	//setting the rasterizer:
@@ -876,7 +895,7 @@ void OnKeyDown(HWND hwnd, UINT vk, BOOL fDown, int cRepeat, UINT flags)
 			useBoost = true;
 		else
 		{
-			music.fade_in_and_play(track1,100);
+			music.play(track1);
 			cam.flying = true;
 			cam.position = cam.position - cam.normal *XMFLOAT3(15, 15, 15);
 		}
@@ -942,265 +961,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-
-
-//--------------------------------------------------------------------------------------
-// sprites
-//--------------------------------------------------------------------------------------
-class sprites
-{
-public:
-	XMFLOAT3 position;
-	XMFLOAT3 impulse;
-	float rotation_x;
-	float rotation_y;
-	float rotation_z;
-	sprites()
-	{
-		impulse = position = XMFLOAT3(0, 0, 0);
-		rotation_x = rotation_y = rotation_z;
-	}
-	XMMATRIX animation()
-	{
-		//update position:
-		position.x = position.x + impulse.x; //newtons law
-		position.y = position.y + impulse.y; //newtons law
-		position.z = position.z + impulse.z; //newtons law
-
-		XMMATRIX M;
-		//make matrix M:
-		XMMATRIX R, Rx, Ry, Rz, T;
-		T = XMMatrixTranslation(position.x, position.y, position.z);
-		Rx = XMMatrixRotationX(rotation_x);
-		Ry = XMMatrixRotationX(rotation_y);
-		Rz = XMMatrixRotationX(rotation_z);
-		R = Rx*Ry*Rz;
-		M = R*T;
-		return M;
-	}
-};
-sprites mario;
-
-//--------------------------------------------------------------------------------------
-// Render a frame
-//--------------------------------------------------------------------------------------
-
-//*******************************************************
 float grapeSize1 = .1;
 float grapeSize2 = .1;
 float grapeSize3 = .1;
 string test2 = "||||||||||";
 int count1 = 0;
-//void Render()
-//{
-//	cam.controlledSpeed = speedMultiplier;
-//	if (collected == 3) {
-//		PostQuitMessage(0);
-//	}
-//	static StopWatchMicro_ stopwatch;
-//	long elapsed = stopwatch.elapse_micro();
-//	stopwatch.start();//restart
-//
-//	changeModels(&models[10]);
-//
-//
-//	UINT stride = sizeof(SimpleVertex);
-//	UINT offset = 0;
-//	g_pImmediateContext->OMSetRenderTargets(1, &g_pRenderTargetView, g_pDepthStencilView);
-//
-//
-//	// Clear the back buffer
-//	float ClearColor[4] = { 0.0f, 0.125f, 0.3f, 1.0f }; // red, green, blue, alpha
-//	g_pImmediateContext->ClearRenderTargetView(g_pRenderTargetView, ClearColor);
-//
-//	// Clear the depth buffer to 1.0 (max depth)
-//	g_pImmediateContext->ClearDepthStencilView(g_pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
-//
-//	cam.animation(elapsed);
-//	XMMATRIX view = cam.get_matrix(&g_View);
-//
-//	XMMATRIX Iview = view;
-//	Iview._41 = Iview._42 = Iview._43 = 0.0;
-//	XMVECTOR det;
-//	Iview = XMMatrixInverse(&det, Iview);
-//
-//	//ENTER MATRIX CALCULATION HERE
-//	XMMATRIX worldmatrix;
-//	worldmatrix = XMMatrixIdentity();
-//	//XMMATRIX S, T, R, R2;
-//	//worldmatrix = .... probably define some other matrices here!
-//
-//
-//
-//	// Update constant buffer
-//	ConstantBuffer constantbuffer;
-//	constantbuffer.View = XMMatrixTranspose(view);
-//	constantbuffer.Projection = XMMatrixTranspose(g_Projection);
-//	constantbuffer.CameraPos = XMFLOAT4(cam.position.x, cam.position.y, cam.position.z, 1);
-//
-//	XMMATRIX T, R, M, S;
-//
-//	/*SkySphere*/
-//	S = XMMatrixScaling(10, 10, 10);
-//	T = XMMatrixTranslation(-cam.position.x, -cam.position.y, -cam.position.z);
-//	R = XMMatrixRotationX(-XM_PIDIV2);
-//	M = S * T;
-//	constantbuffer.World = XMMatrixTranspose(M);
-//	g_pImmediateContext->UpdateSubresource(g_pCBuffer, 0, NULL, &constantbuffer, 0, 0);
-//	// Render terrain
-//	g_pImmediateContext->VSSetShader(g_pVertexShader, NULL, 0);
-//	g_pImmediateContext->PSSetShader(g_pPixelShader, NULL, 0);
-//	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pCBuffer);
-//	g_pImmediateContext->PSSetConstantBuffers(0, 1, &g_pCBuffer);
-//	g_pImmediateContext->PSSetShaderResources(0, 1, &g_pTextureSky);
-//	g_pImmediateContext->VSSetShaderResources(0, 1, &g_pTextureSky);
-//	g_pImmediateContext->IASetVertexBuffers(0, 1, &g_pVertexBuffer_sky, &stride, &offset);
-//	g_pImmediateContext->PSSetSamplers(0, 1, &g_pSamplerLinear);
-//	g_pImmediateContext->VSSetSamplers(0, 1, &g_pSamplerLinear);
-//
-//	g_pImmediateContext->OMSetDepthStencilState(ds_off, 1);
-//	g_pImmediateContext->Draw(model_vertex_sky, 0);
-//	g_pImmediateContext->OMSetDepthStencilState(ds_on, 1);
-//
-//
-//	/*//car
-//	S = XMMatrixScaling(1, 1, 1);
-//	T = XMMatrixTranslation(0, 50, 0);
-//	R = XMMatrixRotationY(-XM_PIDIV2);
-//	M = S * R * T;
-//	constantbuffer.World = XMMatrixTranspose(M);
-//	g_pImmediateContext->UpdateSubresource(g_pCBuffer, 0, NULL, &constantbuffer, 0, 0);
-//	// Render terrain
-//	g_pImmediateContext->VSSetShader(g_pVertexShader, NULL, 0);
-//	g_pImmediateContext->PSSetShader(g_pPixelShader, NULL, 0);
-//	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pCBuffer);
-//	g_pImmediateContext->PSSetConstantBuffers(0, 1, &g_pCBuffer);
-//	g_pImmediateContext->PSSetShaderResources(0, 1, &g_pTextureTest);
-//	g_pImmediateContext->VSSetShaderResources(0, 1, &g_pTextureTest);
-//	g_pImmediateContext->IASetVertexBuffers(0, 1, &g_pVertexBuffer_test, &stride, &offset);
-//	g_pImmediateContext->PSSetSamplers(0, 1, &g_pSamplerLinear);
-//	g_pImmediateContext->VSSetSamplers(0, 1, &g_pSamplerLinear);
-//
-//	g_pImmediateContext->OMSetDepthStencilState(ds_on, 1);
-//	g_pImmediateContext->Draw(model_vertex_test, 0);
-//
-//	*/
-//
-//	//grape
-//	if (grapeSize1 > .05){
-//		if (closeEnough == true) {
-//			grapeSize1 += -grapeSize1 / 1000;
-//		}
-//		S = XMMatrixScaling(grapeSize1, grapeSize1, grapeSize1);
-//		T = XMMatrixTranslation(0, 20, 0);
-//		R = XMMatrixRotationX(-XM_PIDIV2);
-//		M = S * T;
-//		constantbuffer.World = XMMatrixTranspose(M);
-//		g_pImmediateContext->UpdateSubresource(g_pCBuffer, 0, NULL, &constantbuffer, 0, 0);
-//
-//		g_pImmediateContext->VSSetShader(g_pVertexShader, NULL, 0);
-//		g_pImmediateContext->PSSetShader(g_pPixelShader, NULL, 0);
-//		g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pCBuffer);
-//		g_pImmediateContext->PSSetConstantBuffers(0, 1, &g_pCBuffer);
-//		g_pImmediateContext->PSSetShaderResources(0, 1, &g_pTextureGrape);
-//		g_pImmediateContext->VSSetShaderResources(0, 1, &g_pTextureGrape);
-//		g_pImmediateContext->IASetVertexBuffers(0, 1, &g_pVertexBuffer_sky, &stride, &offset);
-//		g_pImmediateContext->PSSetSamplers(0, 1, &g_pSamplerLinear);
-//		g_pImmediateContext->VSSetSamplers(0, 1, &g_pSamplerLinear);
-//
-//		g_pImmediateContext->OMSetDepthStencilState(ds_on, 1);
-//		g_pImmediateContext->Draw(model_vertex_sky, 0);
-//	}
-//	else {
-//		if (grapeSize1 != 0) {	//still has not been set to zero so it will allow it to be collected only once
-//			collected++;
-//		}
-//		grapeSize1 = 0;
-//	}
-//	
-//	
-//
-//
-//	/*House*/
-//
-//	models[0].scale = XMMatrixScaling(1, 1, 1);
-//	models[0].translate = XMMatrixTranslation(0, 0, 0);
-//	models[0].rotate = XMMatrixRotationX(-XM_PIDIV2);
-//	M = models[0].scale * models[0].rotate * models[0].translate;
-//
-//	constantbuffer.World = XMMatrixTranspose(M);
-//	g_pImmediateContext->UpdateSubresource(g_pCBuffer, 0, NULL, &constantbuffer, 0, 0);
-//	// Render terrain
-//	g_pImmediateContext->VSSetShader(g_pVertexShader, NULL, 0);
-//	g_pImmediateContext->PSSetShader(g_pPixelShader, NULL, 0);
-//	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pCBuffer);
-//	g_pImmediateContext->PSSetConstantBuffers(0, 1, &g_pCBuffer);
-//	g_pImmediateContext->PSSetShaderResources(0, 1, &models[0].texture);
-//	g_pImmediateContext->VSSetShaderResources(0, 1, &models[0].texture);
-//	g_pImmediateContext->IASetVertexBuffers(0, 1, &models[0].vertex_buffer, &stride, &offset);
-//	g_pImmediateContext->PSSetSamplers(0, 1, &g_pSamplerLinear);
-//	g_pImmediateContext->VSSetSamplers(0, 1, &g_pSamplerLinear);
-//
-//	g_pImmediateContext->OMSetDepthStencilState(ds_on, 1);
-//	g_pImmediateContext->Draw(models[0].vertex_count, 0);
-//	for (int x = 1; x <= 3; x++) { // change x < Num to # number of items
-//
-//		M = models[x].scale * models[x].rotate * models[x].translate;
-//		constantbuffer.World = XMMatrixTranspose(M);
-//		models[x].update_objectSphere(&collision_detection, M, models[x].scale);
-//
-//		g_pImmediateContext->UpdateSubresource(g_pCBuffer, 0, NULL, &constantbuffer, 0, 0);
-//		// Render terrain
-//		g_pImmediateContext->VSSetShader(g_pVertexShader, NULL, 0);
-//		g_pImmediateContext->PSSetShader(g_pPixelShader, NULL, 0);
-//		g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pCBuffer);
-//		g_pImmediateContext->PSSetConstantBuffers(0, 1, &g_pCBuffer);
-//		g_pImmediateContext->PSSetShaderResources(0, 1, &models[x].texture);
-//		g_pImmediateContext->VSSetShaderResources(0, 1, &models[x].texture);
-//		g_pImmediateContext->IASetVertexBuffers(0, 1, &models[x].vertex_buffer, &stride, &offset);
-//		g_pImmediateContext->PSSetSamplers(0, 1, &g_pSamplerLinear);
-//		g_pImmediateContext->VSSetSamplers(0, 1, &g_pSamplerLinear);
-//
-//		g_pImmediateContext->OMSetDepthStencilState(ds_on, 1);
-//		g_pImmediateContext->Draw(models[x].vertex_count, 0);
-//	}
-//	stringstream ss(stringstream::in | stringstream::out);
-//	stringstream ss2(stringstream::in | stringstream::out);
-//
-//	ss << "Items Collected: " << collected;
-//	font.setScaling(XMFLOAT3(1.5,1.5,1.5));
-//	font.setColor(XMFLOAT3(255, 0, 0));
-//	font.setPosition(XMFLOAT3(-.9 ,.9 , 0));
-//	string test = ss.str();
-//
-//	if (useBoost == true ) {
-//		if (count1 % 100 == 0 && test2.length() > 0) {
-//			test2 = test2.substr(0, test2.length() - 1);
-//			speedMultiplier = 2;
-//			count1 = 0;
-//		}
-//		else if(test2.length() == 0){
-//			speedMultiplier = 1;
-//		}
-//	}
-//	else if (useBoost == false && test2.length() < 10){//add some back
-//		speedMultiplier = 1;
-//		if (count1 % 100 == 0) {
-//			test2 .append("|");
-//		}
-//		
-//	}
-//	count1++;
-//	ss2 << count1;
-//	string test3 = ss2.str();
-//	test = test + "\n" + "Boost: " + test2; // +"\nelapsed: " + test3;
-//
-//	font << test;
-//	//
-//	// Present our back buffer to our front buffer
-//	//
-//	g_pSwapChain->Present(0, 0);
-//}
 
 //--------------------------------------------------------------------------------------
 // Render a frame
@@ -1223,17 +988,12 @@ void Render_to_texture(long elapsed)
 
 	XMMATRIX view = cam.get_matrix(&g_View);
 
-	//render_objects(view, elapsed);
-
-	//cam.controlledspeed = speedMultiplier;
 	if (collected == 3) {
 		PostQuitMessage(0);
 	}
 	static StopWatchMicro_ stopwatch;
 	//		long elapsed = stopwatch.elapse_micro();
 	stopwatch.start();//restart
-
-	//changeModels(&models[10]);
 
 
 	UINT stride = sizeof(SimpleVertex);
@@ -1323,8 +1083,113 @@ void Render_to_texture(long elapsed)
 	g_pImmediateContext->OMSetDepthStencilState(ds_on, 1);
 	g_pImmediateContext->Draw(table.vertex_count, 0);
 
+	/**************************SIDEBOARD***************************/
+
+	S = XMMatrixScaling(.2 ,.2,.2);
+	T = XMMatrixTranslation(-500,5 , 200);
+	R = XMMatrixRotationX(-XM_PIDIV2);
+	XMMATRIX Ry = XMMatrixRotationY(XM_PIDIV2);
+	M = S *R * Ry * T;
+
+	constantbuffer.World = XMMatrixTranspose(M);
+
+	if (update_boundaries)
+		models[2].boundary->transform_boundary(M, .2);
+	g_pImmediateContext->UpdateSubresource(g_pCBuffer, 0, NULL, &constantbuffer, 0, 0);
+
+	g_pImmediateContext->VSSetShader(g_pVertexShader, NULL, 0);
+	g_pImmediateContext->PSSetShader(g_pPixelShader, NULL, 0);
+	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pCBuffer);
+	g_pImmediateContext->PSSetConstantBuffers(0, 1, &g_pCBuffer);
+	g_pImmediateContext->PSSetShaderResources(0, 1, &sideboard.g_pTexture);
+	g_pImmediateContext->VSSetShaderResources(0, 1, &sideboard.g_pTexture);
+	g_pImmediateContext->IASetVertexBuffers(0, 1, &sideboard.vertex_buffer, &stride, &offset);
+	g_pImmediateContext->PSSetSamplers(0, 1, &g_pSamplerLinear);
+	g_pImmediateContext->VSSetSamplers(0, 1, &g_pSamplerLinear);
+
+	g_pImmediateContext->OMSetDepthStencilState(ds_on, 1);
+	g_pImmediateContext->Draw(sideboard.vertex_count, 0);
 
 
+	/**************************TEST***************************/
+
+	S = XMMatrixScaling(30, 30, 30);
+	T = XMMatrixTranslation(-250, 5, 200);
+	R = XMMatrixRotationX(-XM_PIDIV2);
+	Ry = XMMatrixRotationY(-XM_PIDIV2);
+	M = S *R * Ry * T;
+	constantbuffer.World = XMMatrixTranspose(M);
+
+	if (update_boundaries)
+		models[4].boundary->transform_boundary(M, 30);
+	g_pImmediateContext->UpdateSubresource(g_pCBuffer, 0, NULL, &constantbuffer, 0, 0);
+
+	g_pImmediateContext->VSSetShader(g_pVertexShader, NULL, 0);
+	g_pImmediateContext->PSSetShader(g_pPixelShader, NULL, 0);
+	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pCBuffer);
+	g_pImmediateContext->PSSetConstantBuffers(0, 1, &g_pCBuffer);
+	g_pImmediateContext->PSSetShaderResources(0, 1, &sofa.g_pTexture);
+	g_pImmediateContext->VSSetShaderResources(0, 1, &sofa.g_pTexture);
+	g_pImmediateContext->IASetVertexBuffers(0, 1, &sofa.vertex_buffer, &stride, &offset);
+	g_pImmediateContext->PSSetSamplers(0, 1, &g_pSamplerLinear);
+	g_pImmediateContext->VSSetSamplers(0, 1, &g_pSamplerLinear);
+
+	g_pImmediateContext->OMSetDepthStencilState(ds_on, 1);
+	g_pImmediateContext->Draw(sofa.vertex_count, 0);
+
+
+	/***************************Kitchen***************************/
+
+	S = XMMatrixScaling(40, 40, 40);
+	T = XMMatrixTranslation(330, 5, 130);
+	R = XMMatrixRotationX(-XM_PIDIV2);
+	Ry = XMMatrixRotationY(XM_PI);
+	M = S *R * Ry * T;
+
+	if (update_boundaries)
+		models[3].boundary->transform_boundary(M, 40);
+
+	constantbuffer.World = XMMatrixTranspose(M);
+	g_pImmediateContext->UpdateSubresource(g_pCBuffer, 0, NULL, &constantbuffer, 0, 0);
+
+	g_pImmediateContext->VSSetShader(g_pVertexShader, NULL, 0);
+	g_pImmediateContext->PSSetShader(g_pPixelShader, NULL, 0);
+	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pCBuffer);
+	g_pImmediateContext->PSSetConstantBuffers(0, 1, &g_pCBuffer);
+	g_pImmediateContext->PSSetShaderResources(0, 1, &kitchen.g_pTexture);
+	g_pImmediateContext->VSSetShaderResources(0, 1, &kitchen.g_pTexture);
+	g_pImmediateContext->IASetVertexBuffers(0, 1, &kitchen.vertex_buffer, &stride, &offset);
+	g_pImmediateContext->PSSetSamplers(0, 1, &g_pSamplerLinear);
+	g_pImmediateContext->VSSetSamplers(0, 1, &g_pSamplerLinear);
+
+	g_pImmediateContext->OMSetDepthStencilState(ds_on, 1);
+	g_pImmediateContext->Draw(kitchen.vertex_count, 0);
+
+
+	/***************************TEST***************************/
+
+
+	S = XMMatrixScaling(1, 1, 1);
+	T = XMMatrixTranslation(0, 20, 0);
+	R = XMMatrixRotationX(-XM_PIDIV2);
+	Ry = XMMatrixRotationY(XM_PIDIV2);
+	M = S *R * Ry * T;
+
+	constantbuffer.World = XMMatrixTranspose(M);
+	g_pImmediateContext->UpdateSubresource(g_pCBuffer, 0, NULL, &constantbuffer, 0, 0);
+
+	g_pImmediateContext->VSSetShader(g_pVertexShader, NULL, 0);
+	g_pImmediateContext->PSSetShader(g_pPixelShader, NULL, 0);
+	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pCBuffer);
+	g_pImmediateContext->PSSetConstantBuffers(0, 1, &g_pCBuffer);
+	g_pImmediateContext->PSSetShaderResources(0, 1, &test.g_pTexture);
+	g_pImmediateContext->VSSetShaderResources(0, 1, &test.g_pTexture);
+	g_pImmediateContext->IASetVertexBuffers(0, 1, &test.vertex_buffer, &stride, &offset);
+	g_pImmediateContext->PSSetSamplers(0, 1, &g_pSamplerLinear);
+	g_pImmediateContext->VSSetSamplers(0, 1, &g_pSamplerLinear);
+
+	g_pImmediateContext->OMSetDepthStencilState(ds_on, 1);
+	g_pImmediateContext->Draw(test.vertex_count, 0);
 
 	//grape
 	if (grapeSize1 > .05) {
@@ -1333,7 +1198,6 @@ void Render_to_texture(long elapsed)
 		}
 		S = XMMatrixScaling(grapeSize1, grapeSize1, grapeSize1);
 		T = XMMatrixTranslation(0, 20, 0);
-		R = XMMatrixRotationX(-XM_PIDIV2);
 		M = S * T;
 		constantbuffer.World = XMMatrixTranspose(M);
 		g_pImmediateContext->UpdateSubresource(g_pCBuffer, 0, NULL, &constantbuffer, 0, 0);
@@ -1358,7 +1222,35 @@ void Render_to_texture(long elapsed)
 		grapeSize1 = 0;
 	}
 
+	if (grapeSize2 > .05) {
+		if (closeEnough == true) {
+			grapeSize2 += -grapeSize2 / 1000;
+		}
+		S = XMMatrixScaling(grapeSize2, grapeSize2, grapeSize2);
+		T = XMMatrixTranslation(505, 20, 130);
+		M = S * T;
+		constantbuffer.World = XMMatrixTranspose(M);
+		g_pImmediateContext->UpdateSubresource(g_pCBuffer, 0, NULL, &constantbuffer, 0, 0);
 
+		g_pImmediateContext->VSSetShader(g_pVertexShader, NULL, 0);
+		g_pImmediateContext->PSSetShader(g_pPixelShader, NULL, 0);
+		g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pCBuffer);
+		g_pImmediateContext->PSSetConstantBuffers(0, 1, &g_pCBuffer);
+		g_pImmediateContext->PSSetShaderResources(0, 1, &g_pTextureGrape);
+		g_pImmediateContext->VSSetShaderResources(0, 1, &g_pTextureGrape);
+		g_pImmediateContext->IASetVertexBuffers(0, 1, &g_pVertexBuffer_sky, &stride, &offset);
+		g_pImmediateContext->PSSetSamplers(0, 1, &g_pSamplerLinear);
+		g_pImmediateContext->VSSetSamplers(0, 1, &g_pSamplerLinear);
+
+		g_pImmediateContext->OMSetDepthStencilState(ds_on, 1);
+		g_pImmediateContext->Draw(model_vertex_sky, 0);
+	}
+	else {
+		if (grapeSize2 != 0) {	//still has not been set to zero so it will allow it to be collected only once
+			collected++;
+		}
+		grapeSize2 = 0;
+	}
 
 
 	/*House*/
@@ -1420,7 +1312,6 @@ void Render_to_texture(long elapsed)
 	//}
 	stringstream ss(stringstream::in | stringstream::out);
 	stringstream ss2(stringstream::in | stringstream::out);
-
 	ss << "Items Collected: " << collected;
 	font.setScaling(XMFLOAT3(1.5, 1.5, 1.5));
 	font.setColor(XMFLOAT3(255, 0, 0));
@@ -1428,11 +1319,6 @@ void Render_to_texture(long elapsed)
 	string test = ss.str();
 
 	if (useBoost == true) {
-		if (first_pass_boost)
-		{
-			music.play_fx("sounds/fly_wind_fast_fx.mp3");
-			first_pass_boost = false;
-		}
 		if (count1 % 100 == 0 && test2.length() > 0) {
 			test2 = test2.substr(0, test2.length() - 1);
 			cam.speedMultiplier = 7;
@@ -1440,7 +1326,6 @@ void Render_to_texture(long elapsed)
 		}
 		else if (test2.length() == 0) {
 			cam.speedMultiplier = 1;
-			
 		}
 	}
 	else if (useBoost == false && test2.length() < 10) {//add some back
@@ -1448,7 +1333,7 @@ void Render_to_texture(long elapsed)
 		if (count1 % 100 == 0) {
 			test2.append("|");
 		}
-		first_pass_boost = true;
+
 	}
 	count1++;
 	ss2 << count1;
@@ -1470,7 +1355,7 @@ void Render_to_texture(long elapsed)
 	{
 		if (collision_flag)
 		{
-			music.play_fx("sounds/fly_wind_dying_fx.mp3");
+			music.play_fx("sounds/thud.mp3");
 			collision_flag = false;
 		}
 		//music.fade_out(1,10);
@@ -1552,51 +1437,6 @@ void Render_to_shadowmap(long elapsed)
 
 	XMMATRIX T, R, M, S;
 
-	/*SkySphere*/
-	//S = XMMatrixScaling(10, 10, 10);
-	//T = XMMatrixTranslation(-cam.position.x, -cam.position.y, -cam.position.z);
-	////R = XMMatrixRotationX(-XM_PIDIV2);
-	//M = S * T;
-	//constantbuffer.World = XMMatrixTranspose(M);
-	//g_pImmediateContext->UpdateSubresource(g_pCBuffer, 0, NULL, &constantbuffer, 0, 0);
-
-	//g_pImmediateContext->VSSetShader(g_pVertexShader, NULL, 0);
-	//g_pImmediateContext->PSSetShader(g_pPSsky, NULL, 0);
-	//g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pCBuffer);
-	//g_pImmediateContext->PSSetConstantBuffers(0, 1, &g_pCBuffer);
-	//g_pImmediateContext->PSSetShaderResources(0, 1, &g_pTextureSky);
-	//g_pImmediateContext->VSSetShaderResources(0, 1, &g_pTextureSky);
-	//g_pImmediateContext->IASetVertexBuffers(0, 1, &g_pVertexBuffer_sky, &stride, &offset);
-	//g_pImmediateContext->PSSetSamplers(0, 1, &g_pSamplerLinear);
-	//g_pImmediateContext->VSSetSamplers(0, 1, &g_pSamplerLinear);
-
-	//g_pImmediateContext->OMSetDepthStencilState(ds_off, 1);
-	//g_pImmediateContext->Draw(model_vertex_sky, 0);
-	//g_pImmediateContext->OMSetDepthStencilState(ds_on, 1);
-
-
-	/*//car
-	S = XMMatrixScaling(1, 1, 1);
-	T = XMMatrixTranslation(0, 50, 0);
-	R = XMMatrixRotationY(-XM_PIDIV2);
-	M = S * R * T;
-	constantbuffer.World = XMMatrixTranspose(M);
-	g_pImmediateContext->UpdateSubresource(g_pCBuffer, 0, NULL, &constantbuffer, 0, 0);
-	// Render terrain
-	g_pImmediateContext->VSSetShader(g_pVertexShader, NULL, 0);
-	g_pImmediateContext->PSSetShader(g_pPixelShader, NULL, 0);
-	g_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pCBuffer);
-	g_pImmediateContext->PSSetConstantBuffers(0, 1, &g_pCBuffer);
-	g_pImmediateContext->PSSetShaderResources(0, 1, &g_pTextureTest);
-	g_pImmediateContext->VSSetShaderResources(0, 1, &g_pTextureTest);
-	g_pImmediateContext->IASetVertexBuffers(0, 1, &g_pVertexBuffer_test, &stride, &offset);
-	g_pImmediateContext->PSSetSamplers(0, 1, &g_pSamplerLinear);
-	g_pImmediateContext->VSSetSamplers(0, 1, &g_pSamplerLinear);
-
-	g_pImmediateContext->OMSetDepthStencilState(ds_on, 1);
-	g_pImmediateContext->Draw(model_vertex_test, 0);
-
-	*/
 
 	//grape
 	if (grapeSize1 > .05) {
@@ -1669,6 +1509,7 @@ void Render_to_shadowmap(long elapsed)
 	//	g_pImmediateContext->OMSetDepthStencilState(ds_on, 1);
 	//	g_pImmediateContext->Draw(models[x].vertex_count, 0);
 	//}
+
 	stringstream ss(stringstream::in | stringstream::out);
 	stringstream ss2(stringstream::in | stringstream::out);
 
@@ -1701,10 +1542,6 @@ void Render_to_shadowmap(long elapsed)
 	test = test + "\n" + "Boost: " + test2; // +"\nelapsed: " + test3;
 
 	font << test;
-	//
-	// Present our back buffer to our front buffer
-	//
-
 
 	//
 	// Present our back buffer to our front buffer
@@ -1738,14 +1575,10 @@ void Render_to_screen(long elapsed)
 	g_pImmediateContext->ClearDepthStencilView(g_pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
 
-
-
 	constantbuffer.World = XMMatrixIdentity();
 	g_pImmediateContext->UpdateSubresource(g_pCBuffer, 0, NULL, &constantbuffer, 0, 0);
 
-
 	// Render screen
-
 
 	g_pImmediateContext->VSSetShader(g_pVertexShader_screen, NULL, 0);
 	g_pImmediateContext->PSSetShader(g_pPixelShader_screen, NULL, 0);
@@ -1780,28 +1613,4 @@ void Render()
 	Render_to_shadowmap(elapsed);
 	Render_to_texture(elapsed);
 	Render_to_screen(elapsed);
-}
-
-
-void changeModels(Model x[])
-{
-	//XMMATRIX Ry;
-	////dinner tables
-	//models[1].scale = XMMatrixScaling(15, 15, 15);
-	//models[1].rotate = XMMatrixRotationX(-XM_PIDIV2);
-	//models[1].translate = XMMatrixTranslation(350, 5.6, -120);
-
-	////center table
-	//models[2].scale = XMMatrixScaling(.5, .5, .5);
-	//Ry = XMMatrixRotationY(-XM_PIDIV2);
-	//models[2].rotate = XMMatrixRotationX(-XM_PIDIV2);
-	//models[2].rotate = models[2].rotate * Ry;
-	//models[2].translate = XMMatrixTranslation(-300, 5.6, 150);
-
-	////frame
-	//models[3].scale = XMMatrixScaling(1, 1, 1);
-	//Ry = XMMatrixRotationY(-XM_PIDIV2);
-	//models[3].rotate = XMMatrixRotationX(-XM_PIDIV2);
-	//models[3].rotate = models[3].rotate * Ry;
-	//models[3].translate = XMMatrixTranslation(-300, 55, 130);
 }

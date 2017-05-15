@@ -84,14 +84,16 @@ Model								table;
 Model								centerTable;
 Model								House;
 bool								update_boundaries = true;
-
+bool								collision_flag = true;
 music_ music;
-
+int track1;
+int track2;
+int track3;
+bool first_loop = true;
 bool closeEnough = false;
 int collected = 0;
 bool useBoost = false;
 //int speedMultiplier = 1;
-
 Font font;
 
 bool render_boundary_test = false;
@@ -677,11 +679,11 @@ HRESULT InitDevice()
 	ShadowMap.Initialize(g_pd3dDevice, g_hWnd, -1, -1, FALSE, DXGI_FORMAT_R32G32B32A32_FLOAT, TRUE);
 
 
-	int track1 = music.init_music("sounds/fly_wind_normal.mp3");
-	int track2 = music.init_music("sounds/fly_wind_fast.mp3");
-	int track3 = music.init_music("sounds/fly_wind_dying.mp3");
+	track1 = music.init_music("sounds/fly_wind_normal.mp3");
+	track2 = music.init_music("sounds/fly_wind_fast.mp3");
+	track3 = music.init_music("sounds/fly_wind_dying.mp3");
 
-	music.set_auto_fadein_fadeout(true);
+	//music.set_auto_fadein_fadeout(true);
 
 	//music.play(track1);
 	//cam.music = &music;
@@ -855,6 +857,7 @@ void OnKeyDown(HWND hwnd, UINT vk, BOOL fDown, int cRepeat, UINT flags)
 	{
 	default:break;
 	case 81://q
+		//music.fade_out(1, 100);
 		//cam.rotation.z += XM_PI;
 		cam.q = 1; break;
 	case 69://e
@@ -871,6 +874,7 @@ void OnKeyDown(HWND hwnd, UINT vk, BOOL fDown, int cRepeat, UINT flags)
 			useBoost = true;
 		else
 		{
+			music.play(track1);
 			cam.flying = true;
 			cam.position = cam.position - cam.normal *XMFLOAT3(15, 15, 15);
 		}
@@ -1203,6 +1207,9 @@ int count1 = 0;
 //############################################################################################################
 void Render_to_texture(long elapsed)
 {
+	if (first_loop)
+		music.play(track1);
+
 	float ClearColor[4] = { 0.0f, 0.125f, 0.3f, 1.0f }; // red, green, blue, alpha
 	ID3D11RenderTargetView*			RenderTarget;
 
@@ -1448,6 +1455,26 @@ void Render_to_texture(long elapsed)
 	// Present our back buffer to our front buffer
 	//
 	g_pSwapChain->Present(0, 0);
+
+	if (cam.hit)
+	{
+		if (collision_flag)
+		{
+			music.play_fx("sounds/thud.mp3");
+			collision_flag = false;
+		}
+		//music.fade_out(1,10);
+		//music.play(3);
+	}
+	else
+	{
+		collision_flag = true;
+		//music.fade_out(3, 100);
+	}
+	if (!cam.flying)
+	{
+		music.fade_out(track1, 10);
+	}
 
 }
 void Render_to_shadowmap(long elapsed)
@@ -1736,6 +1763,7 @@ void Render()
 	static StopWatchMicro_ stopwatch;
 	long elapsed = stopwatch.elapse_micro();
 	stopwatch.start();//restart
+	music.process(elapsed/1000);
 
 	cam.animation(elapsed);
 

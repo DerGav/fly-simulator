@@ -593,6 +593,15 @@ public:
 				if (!this->normal.z)
 					possible_position.z -= forward.z * speed;
 			}
+			if (s)
+			{
+				if (!this->normal.x)
+					possible_position.x += forward.x * speed;
+				if (!this->normal.y)
+					possible_position.y += forward.y * speed;
+				if (!this->normal.z)
+					possible_position.z += forward.z * speed;
+			}
 		}
 		
 		if (!check_collision(possible_position))
@@ -618,9 +627,10 @@ public:
 		T = XMMatrixTranslation(position.x, position.y, position.z);
 		XMMATRIX Ma = XMMatrixRotationRollPitchYaw(0, rotation.y, 0);
 		XMMATRIX Mb = XMMatrixRotationRollPitchYaw(rotation.x, 0, 0);
+		XMMATRIX Mc = XMMatrixRotationRollPitchYaw(0, 0, rotation.z);
 
 		//return T*(*view)*Ry*Rx*Rz;
-		return T*Ma*Mb*(*view);
+		return T*Ma*Mb*Mc*(*view);
 	}
 	bool check_collision(XMFLOAT3 possible_position)
 	{
@@ -633,7 +643,7 @@ public:
 				const Coord_Boundary *pCB = dynamic_cast<const Coord_Boundary*>(it->boundary);
 				if (pCB)
 				{
-					//if (speedMultiplier * controlledspeed < 4)
+					if (speedMultiplier * controlledspeed < 4)
 					{
 
 						flying = false;
@@ -686,7 +696,8 @@ public:
 						{
 							if (normal.y > 0)
 							{
-
+								//rotation.y -=
+								rotation.z = 0;
 							}
 							else
 							{
@@ -701,13 +712,14 @@ public:
 							}
 							else
 							{
+
 							}
 						}
 					}
-					//else
-					//{
-					//	hit = true;
-					//}
+					else
+					{
+						hit = true;
+					}
 
 				}
 				else

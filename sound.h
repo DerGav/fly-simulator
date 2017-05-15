@@ -103,7 +103,7 @@ class audio_args_
 				float vol = (float)(fade_out - diff) / (float)fade_out;
 				vol = 1.0 - vol;
 				vol = max(0, vol);
-				vol = min(1, vol);
+				vol = min(1.5, vol);
 				vol *= -10000;
 				vol = min(vol, volume);
 				set_volume(vol);
@@ -218,6 +218,11 @@ class music_
 					}
 			}
 	public:
+		void process(long t)
+		{
+			for (int ii = 0; ii < tracks.size(); ii++)
+				tracks[ii].process(t);
+		}
 		void set_auto_fadein_fadeout(bool set)
 			{
 			autofade = set;

@@ -450,6 +450,7 @@ public:
 	 
 	bool flying;
 	int hit;
+	bool mildly_confused;
 	//vector with all the spheres to which distance has to be calculated
 	vector<Model>* models;
 
@@ -458,9 +459,11 @@ public:
 		w = s = a = d = 0;
 		speedMultiplier = 1;
 		position = XMFLOAT3(30, -30, 0);
+		//position = XMFLOAT3(480, -160, 115);
 		rotation = normal = XMFLOAT3(0, 0, 0);
 		controlledspeed = 0.8;
 		flying = true;
+		mildly_confused = false;
 		hit = 0;
 
 	}
@@ -548,6 +551,20 @@ public:
 
 				return;
 			}
+			//if caught by wind gust
+			if (mildly_confused)
+			{
+				static float t = 0;
+		
+				t += 0.2;
+
+				rotation.z = sin(t) *speed;
+				XMVECTOR f = XMLoadFloat3(&forward);
+				f = XMVector3TransformCoord(f, Rx*Ry);
+				XMStoreFloat3(&forward, f);
+
+
+			}
 
 
 			possible_position = position;
@@ -608,12 +625,33 @@ public:
 		{
 			position = possible_position;
 		}
-		//for now move player back a bit in case of collision
+
+		//check if player is close to window an the apply "wind"
+		static float push_factor = 5;
+		if (position.x < -110 && position.x > -290 && position.z < -100 && position.z > -318)
+		{
+			position.z += push_factor/2.5;
+			mildly_confused = true;
+
+			if (push_factor > 0)
+				push_factor -= 0.05;
+			else
+				push_factor = 0;
+		}
+		else if (position.x < 510 && position.x > 300 && position.z < -100 && position.z > -318)
+		{
+			position.z += 1;
+			position.x -= push_factor;
+			mildly_confused = true;
+			if (push_factor > 0)
+				push_factor -= 0.05;
+			else
+				push_factor = 0;
+		}
 		else
 		{
-			/*position.x += forward.x;
-			position.y += forward.y;
-			position.z += forward.z;*/
+			mildly_confused = false;
+			push_factor = 5;
 		}
 
 	}

@@ -473,6 +473,7 @@ HRESULT InitDevice()
 	if (FAILED(hr))
 		return FALSE;
 
+
 	//D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
 
@@ -1321,6 +1322,8 @@ void Render_to_texture(long elapsed)
 
 	g_pImmediateContext->OMSetDepthStencilState(ds_on, 1);
 	g_pImmediateContext->Draw(table.vertex_count, 0);
+
+
 
 
 	//grape

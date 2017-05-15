@@ -99,10 +99,12 @@ music_ music;
 int track1;
 int track2;
 int track3;
+int track4;
 bool first_loop = true;
 bool closeEnough = false;
 int collected = 0;
 bool useBoost = false;
+bool first_pass_boost = true;
 //int speedMultiplier = 1;
 Font font;
 
@@ -178,7 +180,7 @@ HRESULT InitWindow(HINSTANCE hInstance, int nCmdShow)
 
 	// Create window
 	g_hInst = hInstance;
-	RECT rc = { 0, 0, 1024, 480 };
+	RECT rc = { 0, 0, 1280, 720 };
 	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 	g_hWnd = CreateWindow(L"TutorialWindowClass", L"Direct3D 11 Tutorial 7", WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, hInstance,
@@ -703,7 +705,7 @@ HRESULT InitDevice()
 	track1 = music.init_music("sounds/fly_wind_normal.mp3");
 	track2 = music.init_music("sounds/fly_wind_fast.mp3");
 	track3 = music.init_music("sounds/fly_wind_dying.mp3");
-
+	track3 = music.init_music("sounds/wind.mp3");
 	//music.set_auto_fadein_fadeout(true);
 
 	//music.play(track1);
@@ -1319,6 +1321,11 @@ void Render_to_texture(long elapsed)
 	string test = ss.str();
 
 	if (useBoost == true) {
+		if (first_pass_boost)
+		{
+			music.play_fx("sounds/fly_wind_fast_fx.mp3");
+			first_pass_boost = false;
+		}
 		if (count1 % 100 == 0 && test2.length() > 0) {
 			test2 = test2.substr(0, test2.length() - 1);
 			cam.speedMultiplier = 7;
@@ -1333,7 +1340,7 @@ void Render_to_texture(long elapsed)
 		if (count1 % 100 == 0) {
 			test2.append("|");
 		}
-
+		first_pass_boost = true;
 	}
 	count1++;
 	ss2 << count1;
@@ -1355,7 +1362,8 @@ void Render_to_texture(long elapsed)
 	{
 		if (collision_flag)
 		{
-			music.play_fx("sounds/thud.mp3");
+			music.play_fx("sounds/fly_wind_dying_fx.mp3");
+			//music.play_fx("sounds/thud.mp3");
 			collision_flag = false;
 		}
 		//music.fade_out(1,10);
@@ -1369,7 +1377,12 @@ void Render_to_texture(long elapsed)
 	if (!cam.flying)
 	{
 		music.fade_out(track1, 10);
+		music.fade_in_and_play(track4,100);
 	}
+	else{
+	}
+
+	
 
 }
 void Render_to_shadowmap(long elapsed)

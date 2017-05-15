@@ -19,6 +19,7 @@
     <ClCompile Include="homework4.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="render_to_texture.cpp" />
+    <ClCompile Include="sound.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">
@@ -28,6 +29,7 @@
     <ClInclude Include="Font.h" />
     <ClInclude Include="render_to_texture.h" />
     <ClInclude Include="controller.h" />
+    <ClInclude Include="sound.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shader.fx">

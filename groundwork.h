@@ -10,6 +10,7 @@
 #include <io.h>
 #include <algorithm>    // std::min_element, std::max_element
 #include "resource.h"
+
 using namespace std;
 #define SPHERE	0
 #define BOX		1
@@ -437,6 +438,7 @@ class camera
 private:
 
 public:
+	//music_* music;
 	int w, s, a, d, q, e;
 	float controlledspeed;
 	float speedMultiplier;
@@ -490,6 +492,7 @@ public:
 			//if there was a collision
 			if (hit)
 			{
+				//music->fade_in_and_play(2, 100);
 				static float t = 0;
 				static int time = 0;
 				

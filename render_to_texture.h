@@ -1,5 +1,5 @@
 #pragma once
-#include "controller.h"
+#include "sound.h"
 //////////////////////////////////////
 class RenderTextureClass
 	{

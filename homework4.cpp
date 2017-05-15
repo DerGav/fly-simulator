@@ -85,6 +85,8 @@ Model								centerTable;
 Model								House;
 bool								update_boundaries = true;
 
+music_ music;
+
 bool closeEnough = false;
 int collected = 0;
 bool useBoost = false;
@@ -675,6 +677,14 @@ HRESULT InitDevice()
 	ShadowMap.Initialize(g_pd3dDevice, g_hWnd, -1, -1, FALSE, DXGI_FORMAT_R32G32B32A32_FLOAT, TRUE);
 
 
+	int track1 = music.init_music("sounds/fly_wind_normal.mp3");
+	int track2 = music.init_music("sounds/fly_wind_fast.mp3");
+	int track3 = music.init_music("sounds/fly_wind_dying.mp3");
+
+	music.set_auto_fadein_fadeout(true);
+
+	music.play(track1);
+	//cam.music = &music;
 	return S_OK;
 }
 

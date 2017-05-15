@@ -1,7 +1,6 @@
 #pragma once
 
 #include "groundwork.h"
-
 #ifndef _XBOX_CONTROLLER_H_
 #define _XBOX_CONTROLLER_H_
 

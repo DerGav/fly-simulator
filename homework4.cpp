@@ -683,7 +683,7 @@ HRESULT InitDevice()
 
 	music.set_auto_fadein_fadeout(true);
 
-	music.play(track1);
+	//music.play(track1);
 	//cam.music = &music;
 	return S_OK;
 }
@@ -787,16 +787,11 @@ void OnMM(HWND hwnd, int x, int y, UINT keyFlags)
 	float angle_y = (float)diffx / 300.0;
 	float angle_x = (float)diffy / 300.0;
 	
-	if (cam.flying)
-	{
+
 		cam.rotation.y += angle_y;
 		cam.rotation.x += angle_x;
-	}
-	else
-	{
-		cam.rotation.y += angle_y;
 
-	}
+
 
 	int midx = (rc.left + rc.right) / 2;
 	int midy = (rc.top + rc.bottom) / 2;
@@ -875,7 +870,10 @@ void OnKeyDown(HWND hwnd, UINT vk, BOOL fDown, int cRepeat, UINT flags)
 		if (cam.flying)
 			useBoost = true;
 		else
+		{
 			cam.flying = true;
+			cam.position = cam.position - cam.normal *XMFLOAT3(15, 15, 15);
+		}
 		break;
 	case 87: cam.w = 1; //w
 		break;

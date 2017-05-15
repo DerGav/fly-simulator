@@ -22,6 +22,7 @@ float Vec3Length(const XMFLOAT3 &v);
 float Vec3Dot(XMFLOAT3 a, XMFLOAT3 b);
 XMFLOAT3 Vec3Cross(XMFLOAT3 a, XMFLOAT3 b);
 XMFLOAT3 Vec3Normalize(const  XMFLOAT3 &a);
+XMFLOAT3 operator*(const XMFLOAT3 lhs, const XMFLOAT3 rhs);
 XMFLOAT3 operator+(const XMFLOAT3 lhs, const XMFLOAT3 rhs);
 XMFLOAT3 operator-(const XMFLOAT3 lhs, const XMFLOAT3 rhs);
 XMFLOAT3 mul(XMFLOAT3 vec, XMMATRIX &M);
@@ -445,6 +446,8 @@ public:
 	XMFLOAT3 position;
 	XMFLOAT3 rotation;
 	XMFLOAT3 move_direction;
+	XMFLOAT3 normal;
+	 
 	bool flying;
 	int hit;
 	//vector with all the spheres to which distance has to be calculated
@@ -455,7 +458,7 @@ public:
 		w = s = a = d = 0;
 		speedMultiplier = 1;
 		position = XMFLOAT3(30, -30, 0);
-		rotation = XMFLOAT3(0, 0, 0);
+		rotation = normal = XMFLOAT3(0, 0, 0);
 		controlledspeed = 0.8;
 		flying = true;
 		hit = 0;
@@ -473,11 +476,11 @@ public:
 			XMMATRIX Ry, Rx, Rz, T;
 			Ry = XMMatrixRotationY(-rotation.y);
 			Rx = XMMatrixRotationX(-rotation.x);
-			Rz = XMMatrixRotationZ(-rotation.z);
+			//Rz = XMMatrixRotationZ(-rotation.z);
 			//Rx = XMMatrixIdentity();
 			forward = XMFLOAT3(0, 0, 1);
 			XMVECTOR f = XMLoadFloat3(&forward);
-			f = XMVector3TransformCoord(f, Rx*Ry*Rz);
+			f = XMVector3TransformCoord(f, Rx*Ry);
 			XMStoreFloat3(&forward, f);
 
 		/*	float forward_len = sqrt(forward.x*forward.x + forward.y*forward.y + forward.z*forward.z);*/
@@ -583,9 +586,12 @@ public:
 			rotation.x = atan(move_direction.y / move_direction.z);*/
 			if (w)
 			{
-				possible_position.x -= forward.x * speed;
-				possible_position.y -= forward.y * speed;
-				possible_position.z -= forward.z * speed;
+				if(!this->normal.x)
+					possible_position.x -= forward.x * speed;
+				if (!this->normal.y)
+					possible_position.y -= forward.y * speed;
+				if (!this->normal.z)
+					possible_position.z -= forward.z * speed;
 			}
 		}
 		
@@ -605,11 +611,16 @@ public:
 	XMMATRIX get_matrix(XMMATRIX *view)
 	{
 		XMMATRIX Rx, Ry, Rz, T;
-		Rx = XMMatrixRotationX(rotation.x);
-		Ry = XMMatrixRotationY(rotation.y);
-		Rz = XMMatrixRotationZ(rotation.z);
+		//Rx = XMMatrixRotationX(rotation.x);
+		//Ry = XMMatrixRotationY(rotation.y);
+		//Rz = XMMatrixRotationZ(rotation.z);
+		
 		T = XMMatrixTranslation(position.x, position.y, position.z);
-		return T*(*view)*Ry*Rx*Rz;
+		XMMATRIX Ma = XMMatrixRotationRollPitchYaw(0, rotation.y, 0);
+		XMMATRIX Mb = XMMatrixRotationRollPitchYaw(rotation.x, 0, 0);
+
+		//return T*(*view)*Ry*Rx*Rz;
+		return T*Ma*Mb*(*view);
 	}
 	bool check_collision(XMFLOAT3 possible_position)
 	{
@@ -622,7 +633,7 @@ public:
 				const Coord_Boundary *pCB = dynamic_cast<const Coord_Boundary*>(it->boundary);
 				if (pCB)
 				{
-					if (speedMultiplier * controlledspeed < 3)
+					//if (speedMultiplier * controlledspeed < 4)
 					{
 
 						flying = false;
@@ -635,7 +646,7 @@ public:
 						move_vec = XMLoadFloat3(&move_direction);
 						cross = XMVector3Cross(normal_vec, move_vec);
 
-						float normal_rot_angle = 0.0;
+						float normal_rot_angle = -XM_PIDIV2;
 
 						/*			if (normal.x != 0 && normal.y == 0 && normal.z == 0)
 							if (normal.x < 0)
@@ -656,15 +667,19 @@ public:
 						rotation.x = atan(new_move.y / new_move.z);
 						rotation.y = atan(new_move.x / new_move.z);
 
+						this->position = this->position - normal*XMFLOAT3(10,10,10);
+
+						this->normal = normal;
 
 						if (normal.x != 0 && normal.y == 0 && normal.z == 0)
 						{
 							if (normal.x > 0)
 							{
-								rotation.z = -XM_PIDIV2;
+								rotation.z = XM_PIDIV2;
 							}
 							else
 							{
+								rotation.z = -XM_PIDIV2;
 							}
 						}
 						else if (normal.x == 0 && normal.y != 0 && normal.z == 0)
@@ -689,10 +704,10 @@ public:
 							}
 						}
 					}
-					else
-					{
-						hit = true;
-					}
+					//else
+					//{
+					//	hit = true;
+					//}
 
 				}
 				else

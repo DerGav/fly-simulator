@@ -449,6 +449,11 @@ XMFLOAT3 Vec3Normalize(const  XMFLOAT3 &a)
 	return c;
 }
 
+XMFLOAT3 operator*(const XMFLOAT3 lhs, const XMFLOAT3 rhs)
+{
+	XMFLOAT3 c = XMFLOAT3(lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z);
+	return c;
+}
 XMFLOAT3 operator+(const XMFLOAT3 lhs, const XMFLOAT3 rhs)
 {
 	XMFLOAT3 c = XMFLOAT3(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z);
